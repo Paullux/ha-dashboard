@@ -3,6 +3,9 @@ import { ENTITIES } from "../config/dashboard";
 import { useServiceCall } from "../hooks/useServiceCall";
 import "./RightPanel.css";
 
+const MIN_TEMP = 16;
+const MAX_TEMP = 30;
+
 interface Props {
   states: Record<string, HaState>;
 }
@@ -62,31 +65,43 @@ function FavoriteLights({ states }: Props) {
 }
 
 function ClimateSummary({ states }: Props) {
-  const climateRooms = ENTITIES.heating.rooms.slice(0, 3);
+  const call = useServiceCall();
+  const cfg = ENTITIES.climate;
+  const entity = states[cfg.entity];
+  const attrs = entity?.attributes as Record<string, unknown> ?? {};
+  const temp = (attrs["temperature"] as number | undefined) ?? 20;
+  const currentIndoor = (attrs["current_temperature"] as number | undefined);
+  const pct = ((temp - MIN_TEMP) / (MAX_TEMP - MIN_TEMP)) * 100;
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const ratio = (e.clientX - rect.left) / rect.width;
+    const newTemp = Math.round(MIN_TEMP + ratio * (MAX_TEMP - MIN_TEMP));
+    call("climate", "set_temperature", { entity_id: cfg.entity, temperature: newTemp });
+  };
+
   return (
     <div className="rp-section">
       <h3 className="rp-title">Climatiseur</h3>
       <div className="climate-summary">
-        {climateRooms.map((room) => {
-          const s = states[room.entity];
-          const temp = s
-            ? (s.attributes as Record<string,unknown>)["temperature"] as number
-            : null;
-          const pct = temp !== null && temp !== undefined
-            ? ((temp - ENTITIES.heating.minTemp) / (ENTITIES.heating.maxTemp - ENTITIES.heating.minTemp)) * 100
-            : 0;
-          return (
-            <div key={room.entity} className="climate-row">
-              <div className="climate-row__top">
-                <span className="climate-row__label">{room.label}</span>
-                <span className="climate-row__temp">{temp ?? "—"} °C</span>
-              </div>
-              <div className="climate-row__track">
-                <div className="climate-row__fill" style={{ width: `${pct}%` }} />
-              </div>
-            </div>
-          );
-        })}
+        <div className="climate-row">
+          <div className="climate-row__top">
+            <span className="climate-row__label">
+              Consigne
+              {currentIndoor !== undefined && (
+                <span className="climate-row__indoor"> · actuel {currentIndoor} °C</span>
+              )}
+            </span>
+            <span className="climate-row__temp">{entity ? `${temp} °C` : "—"}</span>
+          </div>
+          <div className="climate-row__track" onClick={handleClick} style={{ cursor: "pointer" }}>
+            <div className="climate-row__fill" style={{ width: `${pct}%` }} />
+          </div>
+          <div className="climate-row__range">
+            <span>{MIN_TEMP} °C</span>
+            <span>{MAX_TEMP} °C</span>
+          </div>
+        </div>
       </div>
     </div>
   );

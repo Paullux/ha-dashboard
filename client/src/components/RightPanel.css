@@ -172,3 +172,15 @@
 
 .activity-label { font-size: 0.82rem; font-weight: 500; color: var(--text); }
 .activity-desc  { font-size: 0.75rem; color: var(--text-muted); }
+
+.climate-row__range {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.climate-row__indoor {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
