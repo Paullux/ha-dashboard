@@ -28,8 +28,11 @@ export const ENTITIES = {
     ],
     fanModes:   ["low", "medium", "high"],
     fanLabels:  ["Faible", "Moyen", "Fort"],
-    swingModes: ["off", "on"],
-    sleepEntity: "sensor.sleep_mode_climatisation" as string | null,
+    swingModes:    ["off", "on"],
+    swingSwitch:   "switch.oscillation_climatisation",
+    swingSensor:   "sensor.swing_mode_climatisation",
+    sleepSwitch:   "switch.sleep_climatisation",
+    sleepSensor:   "sensor.sleep_mode_climatisation",
   },
 
   heating: {
