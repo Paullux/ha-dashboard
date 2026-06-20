@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  OWNER: paulluxw
+  OWNER: paullux
 
 jobs:
   build:
