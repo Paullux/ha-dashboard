@@ -1,0 +1,39 @@
+.app {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.main {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  min-width: 0;
+}
+
+/* Home page prend tout l'espace */
+.main > .home {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Sections drill-down centrées */
+.section-wrap {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.section-wrap > * {
+  width: 100%;
+  max-width: 480px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  overflow: hidden;
+  min-height: 200px;
+}

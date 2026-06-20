@@ -1,0 +1,129 @@
+<svg viewBox="0 0 360 240" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <filter id="paper" x="-2%" y="-2%" width="104%" height="104%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" seed="14" result="noise"/>
+    <feColorMatrix type="saturate" values="0" in="noise" result="gray"/>
+    <feBlend in="SourceGraphic" in2="gray" mode="multiply"/>
+  </filter>
+  <filter id="wc" x="-4%" y="-4%" width="108%" height="108%">
+    <feTurbulence type="turbulence" baseFrequency="0.025 0.03" numOctaves="2" seed="20" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="wc2" x="-4%" y="-4%" width="108%" height="108%">
+    <feTurbulence type="turbulence" baseFrequency="0.04 0.05" numOctaves="2" seed="2" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="G" yChannelSelector="R"/>
+  </filter>
+</defs>
+<g filter="url(#paper)">
+  <!-- Walls (perspective corridor) -->
+  <!-- Left wall -->
+  <path d="M0,0 L120,30 L120,180 L0,240 Z" fill="#E8DFC8"/>
+  <!-- Right wall -->
+  <path d="M360,0 L240,30 L240,180 L360,240 Z" fill="#E0D8C0"/>
+  <!-- Back wall (end of corridor) -->
+  <path d="M120,30 L240,30 L240,180 L120,180 Z" fill="#EDE5D0"/>
+  <!-- Ceiling -->
+  <path d="M0,0 L360,0 L240,30 L120,30 Z" fill="#D8D0BA"/>
+  <!-- Floor perspective -->
+  <path d="M0,240 L360,240 L240,180 L120,180 Z" fill="#C8906A"/>
+  <!-- Left floor skirting -->
+  <path d="M0,232 L120,176 L120,180 L0,240 Z" fill="#B87848"/>
+  <!-- Right floor skirting -->
+  <path d="M360,232 L240,176 L240,180 L360,240 Z" fill="#B87848"/>
+  <!-- Left baseboard -->
+  <path d="M0,226 L118,172 L120,176 L0,232 Z" fill="#D8CEBC"/>
+  <!-- Right baseboard -->
+  <path d="M360,226 L242,172 L240,176 L360,232 Z" fill="#D8CEBC"/>
+
+  <!-- Perspective floor lines -->
+  <line x1="0" y1="240" x2="180" y2="186" stroke="#B8804A" stroke-width="0.5" opacity="0.35"/>
+  <line x1="0" y1="230" x2="154" y2="183" stroke="#B8804A" stroke-width="0.4" opacity="0.25"/>
+  <line x1="360" y1="240" x2="180" y2="186" stroke="#B8804A" stroke-width="0.5" opacity="0.35"/>
+  <line x1="360" y1="230" x2="206" y2="183" stroke="#B8804A" stroke-width="0.4" opacity="0.25"/>
+  <line x1="80" y1="240" x2="148" y2="185" stroke="#B8804A" stroke-width="0.4" opacity="0.25"/>
+  <line x1="280" y1="240" x2="212" y2="185" stroke="#B8804A" stroke-width="0.4" opacity="0.25"/>
+
+  <!-- Perspective ceiling lines -->
+  <line x1="0" y1="0" x2="120" y2="30" stroke="#C8C0A8" stroke-width="0.5" opacity="0.3"/>
+  <line x1="360" y1="0" x2="240" y2="30" stroke="#C8C0A8" stroke-width="0.5" opacity="0.3"/>
+
+  <!-- Door at end of corridor -->
+  <g filter="url(#wc2)">
+    <rect x="140" y="50" width="80" height="128" rx="2" fill="#A07850" stroke="#806030" stroke-width="2"/>
+    <!-- door panels -->
+    <rect x="146" y="56" width="68" height="52" rx="2" fill="#B88A60" stroke="#906840" stroke-width="1"/>
+    <rect x="146" y="116" width="68" height="56" rx="2" fill="#B88A60" stroke="#906840" stroke-width="1"/>
+    <!-- door handle -->
+    <circle cx="216" cy="138" r="4" fill="#C8A840" stroke="#A88020" stroke-width="1"/>
+    <rect x="214" y="136" width="8" height="3" rx="1" fill="#C8A840"/>
+    <!-- door light above -->
+    <path d="M148,46 Q180,38 212,46 L212,52 L148,52 Z" fill="#D0B880" stroke="#B09060" stroke-width="1"/>
+    <!-- door shadow -->
+    <line x1="140" y1="178" x2="220" y2="178" stroke="#806030" stroke-width="0.8" opacity="0.4"/>
+  </g>
+
+  <!-- Overhead lamp -->
+  <g filter="url(#wc2)">
+    <line x1="180" y1="0" x2="180" y2="30" stroke="#8B7055" stroke-width="2"/>
+    <path d="M164,26 Q180,18 196,26 L193,42 Q180,48 167,42 Z" fill="#F0CC58" stroke="#D8AA40" stroke-width="1.5"/>
+    <!-- light glow on floor -->
+    <ellipse cx="180" cy="186" rx="38" ry="8" fill="#FFF8D0" opacity="0.3"/>
+  </g>
+
+  <!-- Left wall: coat hooks + coats -->
+  <g filter="url(#wc)">
+    <!-- coat rack horizontal bar -->
+    <rect x="6" y="72" width="86" height="4" rx="2" fill="#8B7055" stroke="#6A5035" stroke-width="1"/>
+    <!-- hooks -->
+    <path d="M20,76 Q20,82 14,86 Q12,88 14,90" stroke="#8B7055" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M38,76 Q38,82 32,86 Q30,88 32,90" stroke="#8B7055" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M56,76 Q56,82 50,86 Q48,88 50,90" stroke="#8B7055" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M74,76 Q74,82 68,86 Q66,88 68,90" stroke="#8B7055" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- coats hanging -->
+    <path d="M14,90 Q10,100 8,130 Q10,145 22,148 Q34,145 36,130 Q34,100 32,90 Q26,95 22,95 Q18,95 14,90 Z" fill="#4A5878" stroke="#3A4868" stroke-width="1.2"/>
+    <path d="M14,92 Q16,98 22,98 Q28,98 30,92" stroke="#5A6888" stroke-width="0.8" fill="none"/>
+    <path d="M50,90 Q46,100 44,128 Q46,140 54,142 Q62,140 64,128 Q62,100 60,90 Q56,94 54,94 Q52,94 50,90 Z" fill="#C8704A" stroke="#A85030" stroke-width="1.2"/>
+    <!-- bag hanging -->
+    <path d="M68,90 Q64,95 64,110 L78,110 L78,95 Q74,90 68,90 Z" fill="#8B6A40" stroke="#6A4A20" stroke-width="1"/>
+    <path d="M66,90 Q71,86 76,90" stroke="#8B6A40" stroke-width="2" fill="none"/>
+  </g>
+
+  <!-- Right wall: mirror + console table -->
+  <g filter="url(#wc)">
+    <!-- mirror frame -->
+    <rect x="264" y="45" width="80" height="100" rx="4" fill="#8B7248" stroke="#7A6238" stroke-width="2"/>
+    <rect x="268" y="49" width="72" height="92" rx="3" fill="#C8D8D4" opacity="0.7"/>
+    <!-- mirror reflection lines -->
+    <line x1="274" y1="55" x2="286" y2="67" stroke="#E8F0EE" stroke-width="1.5" opacity="0.5"/>
+    <line x1="274" y1="63" x2="282" y2="71" stroke="#E8F0EE" stroke-width="1" opacity="0.4"/>
+    <!-- console table -->
+    <path d="M252,155 Q252,150 258,148 L352,148 Q358,150 358,155 L357,162 Q357,166 351,166 L259,166 Q252,166 252,162 Z" fill="#A07850" stroke="#806030" stroke-width="1.2"/>
+    <!-- console legs -->
+    <rect x="260" y="162" width="8" height="20" rx="2" fill="#906840"/>
+    <rect x="344" y="162" width="8" height="20" rx="2" fill="#906840"/>
+    <!-- items on console -->
+    <rect x="268" y="142" width="24" height="8" rx="2" fill="#E8E0C8"/>
+    <circle cx="320" cy="144" r="8" fill="#C46A42"/>
+    <ellipse cx="320" cy="138" rx="10" ry="7" fill="#4A8A42"/>
+  </g>
+
+  <!-- Umbrella stand left corner -->
+  <g filter="url(#wc2)">
+    <path d="M6,170 Q4,166 4,180 L22,180 Q22,166 20,170 Z" fill="#8B7055" stroke="#6A5035" stroke-width="1"/>
+    <!-- umbrellas -->
+    <line x1="10" y1="170" x2="12" y2="140" stroke="#4A5878" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M8,142 Q12,136 16,142" stroke="#4A5878" stroke-width="1.5" fill="none"/>
+    <line x1="16" y1="170" x2="18" y2="138" stroke="#C8704A" stroke-width="2" stroke-linecap="round"/>
+    <path d="M14,140 Q18,133 22,140" stroke="#C8704A" stroke-width="1.5" fill="none"/>
+  </g>
+
+  <!-- Small rug in front of door -->
+  <g filter="url(#wc)">
+    <path d="M144,178 Q180,175 216,178 L214,188 Q180,191 146,188 Z" fill="#8A6A4A" stroke="#6A4A2A" stroke-width="1"/>
+    <path d="M150,181 Q180,179 210,181 L209,185 Q180,187 151,185 Z" fill="none" stroke="#A07850" stroke-width="0.8"/>
+    <line x1="168" y1="178" x2="167" y2="188" stroke="#A07850" stroke-width="0.5"/>
+    <line x1="180" y1="177" x2="180" y2="189" stroke="#A07850" stroke-width="0.5"/>
+    <line x1="192" y1="178" x2="193" y2="188" stroke="#A07850" stroke-width="0.5"/>
+  </g>
+</g>
+</svg>

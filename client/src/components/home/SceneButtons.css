@@ -1,0 +1,35 @@
+.scenes-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.scenes-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.scene-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--text);
+  transition: background 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.scene-btn:hover {
+  background: var(--sel);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.scene-btn__icon {
+  font-size: 1rem;
+}

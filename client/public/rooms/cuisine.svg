@@ -1,0 +1,168 @@
+<svg viewBox="0 0 360 240" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <filter id="paper" x="-2%" y="-2%" width="104%" height="104%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" seed="5" result="noise"/>
+    <feColorMatrix type="saturate" values="0" in="noise" result="gray"/>
+    <feBlend in="SourceGraphic" in2="gray" mode="multiply"/>
+  </filter>
+  <filter id="wc" x="-4%" y="-4%" width="108%" height="108%">
+    <feTurbulence type="turbulence" baseFrequency="0.025 0.03" numOctaves="2" seed="9" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="wc2" x="-4%" y="-4%" width="108%" height="108%">
+    <feTurbulence type="turbulence" baseFrequency="0.04 0.05" numOctaves="2" seed="6" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="G" yChannelSelector="R"/>
+  </filter>
+</defs>
+<g filter="url(#paper)">
+  <!-- Wall -->
+  <rect x="0" y="0" width="360" height="165" fill="#EDE5D0"/>
+  <!-- Baseboard -->
+  <path d="M0,158 Q180,155 360,158 L360,166 L0,166 Z" fill="#D8CEBC" stroke="#C8BCA8" stroke-width="0.5"/>
+  <!-- Floor -->
+  <path d="M0,158 Q180,154 360,158 L360,240 L0,240 Z" fill="#C8906A"/>
+  <line x1="0" y1="180" x2="360" y2="178" stroke="#B8804A" stroke-width="0.6" opacity="0.45"/>
+  <line x1="0" y1="200" x2="360" y2="198" stroke="#B8804A" stroke-width="0.6" opacity="0.45"/>
+  <line x1="0" y1="220" x2="360" y2="218" stroke="#B8804A" stroke-width="0.5" opacity="0.35"/>
+  <line x1="55"  y1="158" x2="38"  y2="240" stroke="#B8804A" stroke-width="0.4" opacity="0.3"/>
+  <line x1="115" y1="158" x2="105" y2="240" stroke="#B8804A" stroke-width="0.4" opacity="0.3"/>
+  <line x1="180" y1="158" x2="178" y2="240" stroke="#B8804A" stroke-width="0.4" opacity="0.3"/>
+  <line x1="245" y1="158" x2="252" y2="240" stroke="#B8804A" stroke-width="0.4" opacity="0.3"/>
+  <line x1="305" y1="158" x2="322" y2="240" stroke="#B8804A" stroke-width="0.4" opacity="0.3"/>
+
+  <!-- Backsplash tiles (center) -->
+  <g filter="url(#wc2)">
+    <rect x="62" y="98" width="236" height="38" fill="#D8E8D8"/>
+    <!-- tile lines horizontal -->
+    <line x1="62" y1="110" x2="298" y2="110" stroke="#C0D4C0" stroke-width="0.8"/>
+    <line x1="62" y1="122" x2="298" y2="122" stroke="#C0D4C0" stroke-width="0.8"/>
+    <!-- tile lines vertical -->
+    <line x1="80"  y1="98" x2="80"  y2="136" stroke="#C0D4C0" stroke-width="0.8"/>
+    <line x1="110" y1="98" x2="110" y2="136" stroke="#C0D4C0" stroke-width="0.8"/>
+    <line x1="140" y1="98" x2="140" y2="136" stroke="#C0D4C0" stroke-width="0.8"/>
+    <line x1="170" y1="98" x2="170" y2="136" stroke="#C0D4C0" stroke-width="0.8"/>
+    <line x1="200" y1="98" x2="200" y2="136" stroke="#C0D4C0" stroke-width="0.8"/>
+    <line x1="230" y1="98" x2="230" y2="136" stroke="#C0D4C0" stroke-width="0.8"/>
+    <line x1="260" y1="98" x2="260" y2="136" stroke="#C0D4C0" stroke-width="0.8"/>
+    <line x1="280" y1="98" x2="280" y2="136" stroke="#C0D4C0" stroke-width="0.8"/>
+  </g>
+
+  <!-- Upper cabinets -->
+  <g filter="url(#wc)">
+    <!-- Left upper cabinet -->
+    <rect x="0" y="12" width="62" height="78" fill="#E2D4B0" stroke="#C8B888" stroke-width="1.5"/>
+    <line x1="0" y1="54" x2="62" y2="54" stroke="#C8B888" stroke-width="1"/>
+    <rect x="10" y="20" width="18" height="28" rx="1" fill="#D4C298" stroke="#B8A878" stroke-width="0.8"/>
+    <rect x="34" y="20" width="18" height="28" rx="1" fill="#D4C298" stroke="#B8A878" stroke-width="0.8"/>
+    <rect x="10" y="58" width="18" height="24" rx="1" fill="#D4C298" stroke="#B8A878" stroke-width="0.8"/>
+    <rect x="34" y="58" width="18" height="24" rx="1" fill="#D4C298" stroke="#B8A878" stroke-width="0.8"/>
+    <circle cx="22" cy="34" r="2" fill="#A89060"/>
+    <circle cx="46" cy="34" r="2" fill="#A89060"/>
+    <circle cx="22" cy="70" r="2" fill="#A89060"/>
+    <circle cx="46" cy="70" r="2" fill="#A89060"/>
+
+    <!-- Window center top -->
+    <rect x="132" y="8" width="96" height="82" rx="2" fill="#C8D8E0" stroke="#B0A888" stroke-width="2.5"/>
+    <rect x="134" y="10" width="44" height="78" fill="#D4E8F0" opacity="0.7"/>
+    <rect x="180" y="10" width="46" height="78" fill="#C8E0EC" opacity="0.7"/>
+    <line x1="180" y1="10" x2="180" y2="88" stroke="#B0A888" stroke-width="2"/>
+    <line x1="134" y1="46" x2="228" y2="46" stroke="#B0A888" stroke-width="1.5"/>
+    <!-- pot plant on windowsill -->
+    <rect x="155" y="84" width="50" height="6" rx="1" fill="#C8B888"/>
+    <ellipse cx="176" cy="82" rx="8" ry="4" fill="#5A8A42"/>
+    <path d="M172,82 Q176,72 180,82" stroke="#3A6A2A" stroke-width="1.5" fill="none"/>
+
+    <!-- Right upper cabinet -->
+    <rect x="298" y="12" width="62" height="78" fill="#E2D4B0" stroke="#C8B888" stroke-width="1.5"/>
+    <line x1="298" y1="54" x2="360" y2="54" stroke="#C8B888" stroke-width="1"/>
+    <rect x="308" y="20" width="18" height="28" rx="1" fill="#D4C298" stroke="#B8A878" stroke-width="0.8"/>
+    <rect x="332" y="20" width="18" height="28" rx="1" fill="#D4C298" stroke="#B8A878" stroke-width="0.8"/>
+    <rect x="308" y="58" width="18" height="24" rx="1" fill="#D4C298" stroke="#B8A878" stroke-width="0.8"/>
+    <rect x="332" y="58" width="18" height="24" rx="1" fill="#D4C298" stroke="#B8A878" stroke-width="0.8"/>
+    <circle cx="320" cy="34" r="2" fill="#A89060"/>
+    <circle cx="344" cy="34" r="2" fill="#A89060"/>
+    <circle cx="320" cy="70" r="2" fill="#A89060"/>
+    <circle cx="344" cy="70" r="2" fill="#A89060"/>
+  </g>
+
+  <!-- Counter + lower cabinets -->
+  <g filter="url(#wc)">
+    <!-- Full counter -->
+    <rect x="0" y="136" width="360" height="10" fill="#C0B8A8" stroke="#A8A090" stroke-width="1"/>
+    <!-- Lower cabinets left -->
+    <rect x="0" y="146" width="130" height="24" fill="#E2D4B0" stroke="#C8B888" stroke-width="1.2"/>
+    <line x1="46" y1="146" x2="46" y2="170" stroke="#C8B888" stroke-width="1"/>
+    <line x1="90" y1="146" x2="90" y2="170" stroke="#C8B888" stroke-width="1"/>
+    <rect x="8" y="151" width="32" height="14" rx="1" fill="#D4C298" stroke="#B8A878" stroke-width="0.7"/>
+    <rect x="52" y="151" width="32" height="14" rx="1" fill="#D4C298" stroke="#B8A878" stroke-width="0.7"/>
+    <rect x="96" y="151" width="28" height="14" rx="1" fill="#D4C298" stroke="#B8A878" stroke-width="0.7"/>
+    <circle cx="27" cy="158" r="2" fill="#A89060"/>
+    <circle cx="71" cy="158" r="2" fill="#A89060"/>
+    <circle cx="113" cy="158" r="2" fill="#A89060"/>
+
+    <!-- Stove (center) -->
+    <rect x="130" y="100" width="100" height="46" rx="2" fill="#8A8A8A" stroke="#707070" stroke-width="1.5"/>
+    <rect x="134" y="104" width="92" height="36" rx="1" fill="#9A9A9A"/>
+    <!-- burners -->
+    <circle cx="158" cy="115" r="10" fill="#707070" stroke="#585858" stroke-width="1.5"/>
+    <circle cx="158" cy="115" r="6" fill="#606060"/>
+    <circle cx="202" cy="115" r="10" fill="#707070" stroke="#585858" stroke-width="1.5"/>
+    <circle cx="202" cy="115" r="6" fill="#606060"/>
+    <circle cx="158" cy="132" r="8" fill="#707070" stroke="#585858" stroke-width="1.5"/>
+    <circle cx="158" cy="132" r="5" fill="#606060"/>
+    <circle cx="202" cy="132" r="8" fill="#707070" stroke="#585858" stroke-width="1.5"/>
+    <circle cx="202" cy="132" r="5" fill="#606060"/>
+    <!-- stove knobs -->
+    <circle cx="143" cy="108" r="3" fill="#505050"/>
+    <circle cx="155" cy="108" r="3" fill="#505050"/>
+    <circle cx="167" cy="108" r="3" fill="#505050"/>
+    <circle cx="217" cy="108" r="3" fill="#505050"/>
+
+    <!-- Lower cabinets right -->
+    <rect x="230" y="146" width="130" height="24" fill="#E2D4B0" stroke="#C8B888" stroke-width="1.2"/>
+    <line x1="275" y1="146" x2="275" y2="170" stroke="#C8B888" stroke-width="1"/>
+    <line x1="316" y1="146" x2="316" y2="170" stroke="#C8B888" stroke-width="1"/>
+    <rect x="238" y="151" width="30" height="14" rx="1" fill="#D4C298" stroke="#B8A878" stroke-width="0.7"/>
+    <rect x="282" y="151" width="28" height="14" rx="1" fill="#D4C298" stroke="#B8A878" stroke-width="0.7"/>
+    <rect x="323" y="151" width="30" height="14" rx="1" fill="#D4C298" stroke="#B8A878" stroke-width="0.7"/>
+    <circle cx="256" cy="158" r="2" fill="#A89060"/>
+    <circle cx="299" cy="158" r="2" fill="#A89060"/>
+    <circle cx="341" cy="158" r="2" fill="#A89060"/>
+  </g>
+
+  <!-- Hanging copper pots (left) -->
+  <g filter="url(#wc2)">
+    <line x1="18" y1="0" x2="18" y2="12" stroke="#8B6A38" stroke-width="1.5"/>
+    <line x1="34" y1="0" x2="34" y2="12" stroke="#8B6A38" stroke-width="1.5"/>
+    <line x1="50" y1="0" x2="50" y2="12" stroke="#8B6A38" stroke-width="1.5"/>
+    <!-- pot 1 -->
+    <path d="M10,10 Q10,6 18,6 Q26,6 26,10 L24,22 Q24,26 18,26 Q12,26 12,22 Z" fill="#C87840" stroke="#A05A28" stroke-width="1.2"/>
+    <path d="M10,10 Q18,8 26,10" stroke="#E09050" stroke-width="0.8" fill="none"/>
+    <!-- pot 2 -->
+    <path d="M26,10 Q26,6 34,6 Q42,6 42,10 L41,20 Q41,24 34,24 Q27,24 27,20 Z" fill="#B86830" stroke="#903C18" stroke-width="1.2"/>
+    <!-- pot 3 (smaller) -->
+    <path d="M43,10 Q43,7 50,7 Q57,7 57,10 L56,19 Q56,22 50,22 Q44,22 44,19 Z" fill="#C87840" stroke="#A05A28" stroke-width="1.2"/>
+  </g>
+
+  <!-- Fruits bowl on counter right -->
+  <g filter="url(#wc2)">
+    <path d="M294,126 Q285,124 285,132 L283,136 L315,136 L313,132 Q313,124 304,126 Z" fill="#C8A878" stroke="#A88848" stroke-width="1"/>
+    <circle cx="292" cy="124" r="7" fill="#E8602A"/>
+    <circle cx="304" cy="122" r="8" fill="#F0A020"/>
+    <circle cx="315" cy="124" r="7" fill="#D84020"/>
+    <path d="M304,114 Q306,110 308,114" stroke="#3A6A2A" stroke-width="1.5" fill="none"/>
+  </g>
+
+  <!-- Small herb pot on counter left -->
+  <g filter="url(#wc2)">
+    <rect x="55" y="124" width="20" height="14" rx="2" fill="#C46A42" stroke="#A05030" stroke-width="1"/>
+    <ellipse cx="65" cy="124" rx="10" ry="3" fill="#8B4228"/>
+    <path d="M60,122 Q56,112 52,108" stroke="#3A7A2A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M65,122 Q65,110 66,106" stroke="#3A7A2A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M70,122 Q74,112 78,108" stroke="#3A7A2A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <ellipse cx="52" cy="107" rx="8" ry="5" fill="#4A8A38"/>
+    <ellipse cx="66" cy="105" rx="7" ry="5" fill="#5A9A42"/>
+    <ellipse cx="79" cy="107" rx="8" ry="5" fill="#4A8A38"/>
+  </g>
+</g>
+</svg>

@@ -1,0 +1,17 @@
+.room-illustration {
+  width: 100%;
+  aspect-ratio: 360 / 240;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.room-illustration svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.room-illustration--placeholder {
+  background: var(--sf2);
+}

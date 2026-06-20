@@ -1,0 +1,132 @@
+<svg viewBox="0 0 360 240" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <filter id="paper" x="-2%" y="-2%" width="104%" height="104%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" seed="2" result="noise"/>
+    <feColorMatrix type="saturate" values="0" in="noise" result="gray"/>
+    <feBlend in="SourceGraphic" in2="gray" mode="multiply"/>
+  </filter>
+  <filter id="wc" x="-4%" y="-4%" width="108%" height="108%">
+    <feTurbulence type="turbulence" baseFrequency="0.03 0.035" numOctaves="2" seed="18" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="wc2" x="-4%" y="-4%" width="108%" height="108%">
+    <feTurbulence type="turbulence" baseFrequency="0.04 0.05" numOctaves="2" seed="7" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="G" yChannelSelector="R"/>
+  </filter>
+</defs>
+<g filter="url(#paper)">
+  <!-- Tiled wall (light sage) -->
+  <rect x="0" y="0" width="360" height="168" fill="#D8E8E0"/>
+  <!-- Wall tile grid -->
+  <g opacity="0.5">
+    <line x1="0" y1="30" x2="360" y2="30" stroke="#C0D4CC" stroke-width="0.7"/>
+    <line x1="0" y1="60" x2="360" y2="60" stroke="#C0D4CC" stroke-width="0.7"/>
+    <line x1="0" y1="90" x2="360" y2="90" stroke="#C0D4CC" stroke-width="0.7"/>
+    <line x1="0" y1="120" x2="360" y2="120" stroke="#C0D4CC" stroke-width="0.7"/>
+    <line x1="0" y1="150" x2="360" y2="150" stroke="#C0D4CC" stroke-width="0.7"/>
+    <line x1="30"  y1="0" x2="30"  y2="168" stroke="#C0D4CC" stroke-width="0.7"/>
+    <line x1="60"  y1="0" x2="60"  y2="168" stroke="#C0D4CC" stroke-width="0.7"/>
+    <line x1="90"  y1="0" x2="90"  y2="168" stroke="#C0D4CC" stroke-width="0.7"/>
+    <line x1="120" y1="0" x2="120" y2="168" stroke="#C0D4CC" stroke-width="0.7"/>
+    <line x1="150" y1="0" x2="150" y2="168" stroke="#C0D4CC" stroke-width="0.7"/>
+    <line x1="180" y1="0" x2="180" y2="168" stroke="#C0D4CC" stroke-width="0.7"/>
+    <line x1="210" y1="0" x2="210" y2="168" stroke="#C0D4CC" stroke-width="0.7"/>
+    <line x1="240" y1="0" x2="240" y2="168" stroke="#C0D4CC" stroke-width="0.7"/>
+    <line x1="270" y1="0" x2="270" y2="168" stroke="#C0D4CC" stroke-width="0.7"/>
+    <line x1="300" y1="0" x2="300" y2="168" stroke="#C0D4CC" stroke-width="0.7"/>
+    <line x1="330" y1="0" x2="330" y2="168" stroke="#C0D4CC" stroke-width="0.7"/>
+  </g>
+  <!-- Baseboard -->
+  <path d="M0,161 Q180,158 360,161 L360,169 L0,169 Z" fill="#D8CEBC" stroke="#C8BCA8" stroke-width="0.5"/>
+  <!-- Floor (stone tiles) -->
+  <path d="M0,161 Q180,157 360,161 L360,240 L0,240 Z" fill="#C8906A"/>
+  <!-- Floor tile lines -->
+  <line x1="0" y1="182" x2="360" y2="180" stroke="#B8804A" stroke-width="0.8" opacity="0.5"/>
+  <line x1="0" y1="203" x2="360" y2="201" stroke="#B8804A" stroke-width="0.8" opacity="0.5"/>
+  <line x1="0" y1="224" x2="360" y2="222" stroke="#B8804A" stroke-width="0.5" opacity="0.35"/>
+  <line x1="60"  y1="161" x2="42"  y2="240" stroke="#B8804A" stroke-width="0.6" opacity="0.4"/>
+  <line x1="120" y1="161" x2="110" y2="240" stroke="#B8804A" stroke-width="0.6" opacity="0.4"/>
+  <line x1="180" y1="161" x2="178" y2="240" stroke="#B8804A" stroke-width="0.6" opacity="0.4"/>
+  <line x1="240" y1="161" x2="250" y2="240" stroke="#B8804A" stroke-width="0.6" opacity="0.4"/>
+  <line x1="300" y1="161" x2="318" y2="240" stroke="#B8804A" stroke-width="0.6" opacity="0.4"/>
+
+  <!-- Mirror + vanity (right) -->
+  <g filter="url(#wc2)">
+    <!-- mirror -->
+    <rect x="248" y="12" width="80" height="76" rx="4" fill="#C8D8D4" stroke="#B0A888" stroke-width="2.5"/>
+    <rect x="252" y="16" width="72" height="68" rx="3" fill="#D8ECE8" opacity="0.7"/>
+    <!-- reflection lines -->
+    <line x1="258" y1="22" x2="268" y2="32" stroke="#E8F4F0" stroke-width="1" opacity="0.6"/>
+    <line x1="258" y1="30" x2="264" y2="36" stroke="#E8F4F0" stroke-width="0.8" opacity="0.5"/>
+    <!-- vanity shelf -->
+    <rect x="240" y="90" width="100" height="8" rx="2" fill="#C0B8A0" stroke="#A8A090" stroke-width="1"/>
+    <!-- items on shelf -->
+    <rect x="248" y="82" width="8" height="10" rx="2" fill="#D08888"/>
+    <rect x="260" y="80" width="6" height="12" rx="2" fill="#88A8C0"/>
+    <rect x="270" y="83" width="7" height="9" rx="2" fill="#E0D080"/>
+    <!-- sink -->
+    <path d="M244,100 Q244,96 252,95 L328,95 Q336,96 336,100 L334,118 Q332,124 288,124 Q244,124 244,118 Z" fill="#E8E4DC" stroke="#C8C0B0" stroke-width="1.5"/>
+    <ellipse cx="288" cy="112" rx="28" ry="10" fill="#D0CCC4" stroke="#B8B4AC" stroke-width="1"/>
+    <!-- faucet -->
+    <rect x="284" y="95" width="8" height="14" rx="2" fill="#C0C0C0" stroke="#A0A0A0" stroke-width="1"/>
+    <path d="M282,95 Q288,88 294,95" stroke="#C0C0C0" stroke-width="2" fill="none"/>
+  </g>
+
+  <!-- Bathtub (center/left, freestanding) -->
+  <g filter="url(#wc)">
+    <!-- tub shadow -->
+    <ellipse cx="148" cy="196" rx="104" ry="9" fill="#8B6840" opacity="0.2"/>
+    <!-- tub exterior -->
+    <path d="M44,128 Q40,126 38,132 L36,180 Q36,192 44,196 L252,196 Q260,192 260,180 L258,132 Q256,126 252,128 Z" fill="#F0EDE6" stroke="#D8D4CC" stroke-width="2"/>
+    <!-- tub interior -->
+    <path d="M48,134 Q46,132 44,136 L42,178 Q42,188 48,190 L248,190 Q254,188 254,178 L250,136 Q248,132 246,134 Z" fill="#E4F0F4" stroke="#C8D8DC" stroke-width="1"/>
+    <!-- water in tub -->
+    <path d="M44,160 Q148,156 252,160 L252,188 Q148,192 44,188 Z" fill="#B8D8E4" opacity="0.5"/>
+    <!-- water surface ripple -->
+    <path d="M60,164 Q100,161 140,164 Q180,167 220,164 Q240,162 250,164" stroke="#A0C8D4" stroke-width="1" fill="none" opacity="0.6"/>
+    <!-- tub rim highlight -->
+    <path d="M44,130 Q148,126 252,130" stroke="#FFFFFF" stroke-width="1.5" fill="none" opacity="0.6"/>
+    <!-- tub feet -->
+    <ellipse cx="56" cy="196" rx="8" ry="4" fill="#C8C4BC"/>
+    <ellipse cx="240" cy="196" rx="8" ry="4" fill="#C8C4BC"/>
+    <!-- faucet on tub -->
+    <rect x="88" y="124" width="6" height="16" rx="1" fill="#C8C8C8" stroke="#A8A8A8" stroke-width="0.8"/>
+    <path d="M85,124 Q91,118 97,124" stroke="#C8C8C8" stroke-width="2" fill="none"/>
+    <!-- handles -->
+    <circle cx="82" cy="130" r="5" fill="#D0D0D0" stroke="#A8A8A8" stroke-width="1"/>
+    <circle cx="100" cy="130" r="5" fill="#D0D0D0" stroke="#A8A8A8" stroke-width="1"/>
+  </g>
+
+  <!-- Towel rack (right wall) -->
+  <g filter="url(#wc2)">
+    <rect x="338" y="102" width="16" height="2" rx="1" fill="#C0B8A0"/>
+    <rect x="338" y="114" width="16" height="2" rx="1" fill="#C0B8A0"/>
+    <!-- towels hanging -->
+    <path d="M340,102 Q341,108 340,116" stroke="#E8905A" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.85"/>
+    <path d="M350,102 Q351,108 350,116" stroke="#8AAAC8" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.85"/>
+  </g>
+
+  <!-- Small plant left -->
+  <g filter="url(#wc2)">
+    <rect x="10" y="148" width="28" height="22" rx="3" fill="#C46A42" stroke="#A05030" stroke-width="1.2"/>
+    <ellipse cx="24" cy="148" rx="14" ry="5" fill="#7A4228"/>
+    <!-- leaves - fern style -->
+    <path d="M24,146 Q20,134 14,128" stroke="#4A8A42" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M24,146 Q24,132 24,124" stroke="#4A8A42" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M24,146 Q28,134 34,128" stroke="#4A8A42" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- small fronds -->
+    <path d="M19,136 Q15,132 12,134" stroke="#5A9A52" stroke-width="1.5" fill="none"/>
+    <path d="M21,131 Q17,127 14,130" stroke="#5A9A52" stroke-width="1.5" fill="none"/>
+    <path d="M24,128 Q22,122 24,120" stroke="#5A9A52" stroke-width="1.5" fill="none"/>
+    <path d="M27,131 Q31,127 34,130" stroke="#5A9A52" stroke-width="1.5" fill="none"/>
+    <path d="M29,136 Q33,132 36,134" stroke="#5A9A52" stroke-width="1.5" fill="none"/>
+  </g>
+
+  <!-- Soap/candle on tub edge -->
+  <g filter="url(#wc2)">
+    <rect x="196" y="122" width="24" height="8" rx="2" fill="#F0E8D8"/>
+    <rect x="202" y="116" width="5" height="12" rx="1" fill="#E8D890"/>
+    <path d="M204.5,116 Q205,112 205.5,116" stroke="#F0A040" stroke-width="1.5" fill="none"/>
+  </g>
+</g>
+</svg>

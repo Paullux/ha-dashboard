@@ -1,0 +1,31 @@
+.color-presets {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.color-presets__label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.color-presets__list {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.color-preset {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+}
+
+.color-preset:hover {
+  transform: scale(1.15);
+  border-color: var(--text);
+}
