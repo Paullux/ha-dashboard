@@ -41,3 +41,14 @@
 }
 .swing-sleep-row:last-child { border-bottom: none; }
 .swing-sleep-row span { color: var(--text); font-size: 0.95rem; }
+
+.swing-sleep-label {
+  flex: 1;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+.swing-sleep-state {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-right: 0.75rem;
+}

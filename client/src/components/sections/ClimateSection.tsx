@@ -7,7 +7,7 @@ import { ModeButtons } from "../controls/ModeButtons";
 import { TempSlider } from "../controls/TempSlider";
 import "./ClimateSection.css";
 
-type View = null | "consigne" | "mode" | "ventilateur" | "swing";
+type View = null | "consigne" | "mode" | "ventilateur";
 
 interface Props {
   states: Record<string, HaState>;
@@ -90,43 +90,8 @@ export function ClimateSection({ states }: Props) {
     );
   }
 
-  if (view === "swing") {
-    return (
-      <DrillDown title="Sleep / Swing" back={() => setView(null)}>
-        <div className="swing-sleep-row">
-          <span>Oscillation</span>
-          <button
-            className={`toggle ${swingOn ? "toggle--on" : ""}`}
-            onClick={() =>
-              call("switch", swingOn ? "turn_off" : "turn_on", {
-                entity_id: cfg.swingSwitch,
-              })
-            }
-          >
-            <span className="toggle__thumb" />
-          </button>
-        </div>
-        <div className="swing-sleep-row">
-          <span>Mode Sleep</span>
-          <button
-            className={`toggle ${sleepOn ? "toggle--on" : ""}`}
-            onClick={() =>
-              call("switch", sleepOn ? "turn_off" : "turn_on", {
-                entity_id: cfg.sleepSwitch,
-              })
-            }
-          >
-            <span className="toggle__thumb" />
-          </button>
-        </div>
-      </DrillDown>
-    );
-  }
-
   // Root view
   const activeMode = cfg.modes.find((m) => m.value === currentMode);
-  const swingSleepSub = [swingOn ? "Oscillation" : null, sleepOn ? "Sleep" : null]
-    .filter(Boolean).join(" · ") || "Désactivé";
 
   return (
     <DrillDown title="Climatiseur">
@@ -152,11 +117,26 @@ export function ClimateSection({ states }: Props) {
         sub={fanModes.find((f) => f.value === currentFan)?.label ?? currentFan}
         onClick={() => setView("ventilateur")}
       />
-      <DrillItem
-        label="Sleep / Swing"
-        sub={swingSleepSub}
-        onClick={() => setView("swing")}
-      />
+      <div className="swing-sleep-row">
+        <span className="swing-sleep-label">Oscillation</span>
+        <span className="swing-sleep-state">{swingOn ? "Actif" : "Inactif"}</span>
+        <button
+          className={`toggle ${swingOn ? "toggle--on" : ""}`}
+          onClick={() => call("switch", swingOn ? "turn_off" : "turn_on", { entity_id: cfg.swingSwitch })}
+        >
+          <span className="toggle__thumb" />
+        </button>
+      </div>
+      <div className="swing-sleep-row">
+        <span className="swing-sleep-label">Sleep</span>
+        <span className="swing-sleep-state">{sleepOn ? "Actif" : "Inactif"}</span>
+        <button
+          className={`toggle ${sleepOn ? "toggle--on" : ""}`}
+          onClick={() => call("switch", sleepOn ? "turn_off" : "turn_on", { entity_id: cfg.sleepSwitch })}
+        >
+          <span className="toggle__thumb" />
+        </button>
+      </div>
     </DrillDown>
   );
 }
