@@ -26,7 +26,7 @@ export const ENTITIES = {
       { label: "Auto",   value: "auto", color: "#8b5cf6" },
       { label: "Éteint", value: "off",  color: "#475569" },
     ],
-    fanModes:   ["low", "medium", "high"],
+    fanModes:   ["1", "2", "3"],
     fanLabels:  ["Faible", "Moyen", "Fort"],
     swingModes:    ["off", "on"],
     swingSwitch:   "switch.oscillation_climatisation",
