@@ -65,6 +65,7 @@ export const ENTITIES = {
     favorites: [
       { label: "Séjour",   entity: "light.lumieres_sejour" },
       { label: "Cuisine",  entity: "light.cuisine" },
+      { label: "Chambre",  entity: "light.lampe_chambre" },
       { label: "Bureau",   entity: "light.bureau" },
       { label: "Couloir",  entity: "light.couloir" },
     ],
