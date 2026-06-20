@@ -7,7 +7,7 @@ interface Props {
   states: Record<string, HaState>;
 }
 
-function QuickActions({ states }: Props) {
+function QuickActions(_: Props) {
   const call = useServiceCall();
   return (
     <div className="rp-section">
