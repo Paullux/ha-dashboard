@@ -15,9 +15,10 @@ function RoomCard({ room, states, theme, onClick }: RoomCardProps) {
   const tempState  = room.tempEntity  ? states[room.tempEntity]  : null;
   const lightState = room.lightEntity ? states[room.lightEntity] : null;
 
-  const temp = tempState
-    ? `${parseFloat((tempState.attributes as Record<string, unknown>)["current_temperature"] as string ?? tempState.state).toFixed(0)} °C`
-    : null;
+  const rawTemp = tempState
+    ? parseFloat((tempState.attributes as Record<string, unknown>)["current_temperature"] as string ?? tempState.state)
+    : NaN;
+  const temp = isNaN(rawTemp) ? null : `${rawTemp.toFixed(0)} °C`;
   const lightOn    = lightState?.state === "on";
   const lightLabel = lightState ? (lightOn ? "Allumée" : "Éteinte") : null;
 
