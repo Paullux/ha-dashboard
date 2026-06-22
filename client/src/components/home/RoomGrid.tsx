@@ -2,6 +2,7 @@ import type { HaState } from "../../types/ha";
 import type { Theme } from "../../hooks/useTheme";
 import { ENTITIES, type RoomConfig } from "../../config/dashboard";
 import { RoomIllustration } from "../RoomIllustration";
+import { useSunTimes } from "../../hooks/useSunTimes";
 import "./RoomGrid.css";
 
 const RADIATOR_MODE: Record<string, string> = {
@@ -37,10 +38,11 @@ interface RoomCardProps {
   room: RoomConfig;
   states: Record<string, HaState>;
   theme: Theme;
+  isNight: boolean;
   onClick: () => void;
 }
 
-function RoomCard({ room, states, theme, onClick }: RoomCardProps) {
+function RoomCard({ room, states, theme, isNight, onClick }: RoomCardProps) {
   const tempState  = room.tempEntity  ? states[room.tempEntity]  : null;
   const lightState = room.lightEntity ? states[room.lightEntity] : null;
 
@@ -87,6 +89,7 @@ function RoomCard({ room, states, theme, onClick }: RoomCardProps) {
         lightOn={lightOn}
         climActive={anyClimActive}
         heatActive={anyHeatActive}
+        isNight={isNight}
       />
 
       <div className="room-card__footer">
@@ -122,6 +125,8 @@ interface Props {
 }
 
 export function RoomGrid({ states, theme, onRoomClick }: Props) {
+  const { isNight } = useSunTimes(states);
+
   return (
     <section className="room-section">
       <h2 className="section-title">Pièces</h2>
@@ -132,6 +137,7 @@ export function RoomGrid({ states, theme, onRoomClick }: Props) {
             room={room}
             states={states}
             theme={theme}
+            isNight={isNight}
             onClick={() => onRoomClick(room.id)}
           />
         ))}

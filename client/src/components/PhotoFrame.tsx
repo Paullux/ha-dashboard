@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { HaState } from "../types/ha";
 import { ENTITIES } from "../config/dashboard";
+import { useSunTimes } from "../hooks/useSunTimes";
 import "./PhotoFrame.css";
 
 const BASE = import.meta.env["VITE_API_URL"] ?? "";
@@ -16,16 +17,16 @@ interface Ambiance {
   lampBureau: boolean;
 }
 
-function getAmbiance(states: Record<string, HaState>): Ambiance {
-  const hour = new Date().getHours();
+function getAmbiance(states: Record<string, HaState>, isNight: boolean, isEvening: boolean, isMorning: boolean): Ambiance {
   const weatherState = states[ENTITIES.weather.entity]?.state ?? "";
-  const isEvening = hour >= 19 || hour < 7;
   const rain = ["rainy", "pouring", "lightning", "lightning-rainy"].includes(weatherState);
   const lampSejour = states["light.lumieres_sejour"]?.state === "on";
   const lampBureau = states["light.bureau"]?.state === "on";
+  const now = new Date();
+  const hour = now.getHours();
 
-  if (isEvening) {
-    const nightFilter = hour >= 23 || hour < 5
+  if (isEvening || isNight) {
+    const nightFilter = isNight && (hour >= 23 || hour < 5)
       ? "brightness(0.45) saturate(0.7)"
       : "brightness(0.85) saturate(1.0)";
     return { useNight: true, filter: nightFilter, overlay: "rgba(10,15,40,0.25)", rain, lampSejour, lampBureau };
@@ -50,7 +51,7 @@ function getAmbiance(states: Record<string, HaState>): Ambiance {
     fog:          "rgba(200,210,220,0.2)",
   };
 
-  if (hour >= 6 && hour < 10) {
+  if (isMorning) {
     return {
       useNight: false,
       filter: "brightness(1.05) saturate(1.1) sepia(0.08)",
@@ -89,24 +90,25 @@ interface Props {
 }
 
 export function PhotoFrame({ states, onDismiss }: Props) {
-  const [ambiance, setAmbiance] = useState<Ambiance>(() => getAmbiance(states));
-  const [showNight, setShowNight] = useState(() => getAmbiance(states).useNight);
+  const { isNight, isEvening, isMorning } = useSunTimes(states);
+  const [ambiance, setAmbiance] = useState<Ambiance>(() => getAmbiance(states, isNight, isEvening, isMorning));
+  const [showNight, setShowNight] = useState(() => getAmbiance(states, isNight, isEvening, isMorning).useNight);
 
   // Update ambiance every minute + when states change (for lamps)
   useEffect(() => {
-    const a = getAmbiance(states);
+    const a = getAmbiance(states, isNight, isEvening, isMorning);
     setAmbiance(a);
     setShowNight(a.useNight);
-  }, [states]);
+  }, [states, isNight, isEvening, isMorning]);
 
   useEffect(() => {
     const t = setInterval(() => {
-      const a = getAmbiance(states);
+      const a = getAmbiance(states, isNight, isEvening, isMorning);
       setAmbiance(a);
       setShowNight(a.useNight);
     }, 60_000);
     return () => clearInterval(t);
-  }, [states]);
+  }, [states, isNight, isEvening, isMorning]);
 
   // Build lamp halo gradient
   const lampGradients: string[] = [];

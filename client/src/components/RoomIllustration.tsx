@@ -8,11 +8,10 @@ interface Props {
   lightOn?: boolean;
   climActive?: boolean;
   heatActive?: boolean;
+  isNight?: boolean;
 }
 
-export function RoomIllustration({ roomId, theme, lightOn, climActive, heatActive }: Props) {
-  const hour = new Date().getHours();
-  const isNight = hour >= 21 || hour < 7;
+export function RoomIllustration({ roomId, theme, lightOn, climActive, heatActive, isNight = false }: Props) {
   const svg = useRoomSvg(`/rooms/${roomId}.svg`, theme);
 
   const classes = [
