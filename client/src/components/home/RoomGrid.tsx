@@ -4,6 +4,35 @@ import { ENTITIES, type RoomConfig } from "../../config/dashboard";
 import { RoomIllustration } from "../RoomIllustration";
 import "./RoomGrid.css";
 
+const RADIATOR_MODE: Record<string, string> = {
+  off:       "Éteint",
+  heat_cool: "Hors-Gel",
+  cool:      "Éco",
+  heat:      "Confort",
+  auto:      "Boost",
+};
+
+const CLIM_MODE: Record<string, string> = {
+  off:  "Éteint",
+  cool: "Froid",
+  heat: "Chaud",
+  dry:  "Sec",
+  auto: "Auto",
+};
+
+function climateTag(entity: string, states: Record<string, HaState>, isAC: boolean) {
+  const s = states[entity];
+  if (!s) return null;
+  const mode = s.state;
+  const attrs = s.attributes as Record<string, unknown>;
+  const setpoint = attrs["temperature"] as number | undefined;
+  const label = isAC ? (CLIM_MODE[mode] ?? mode) : (RADIATOR_MODE[mode] ?? mode);
+  const off = mode === "off";
+  const icon = isAC ? "❄️" : "🔥";
+  const setpointStr = !off && setpoint !== undefined ? ` · ${setpoint} °C` : "";
+  return { icon, label: `${label}${setpointStr}`, off, isAC };
+}
+
 interface RoomCardProps {
   room: RoomConfig;
   states: Record<string, HaState>;
@@ -20,26 +49,19 @@ function RoomCard({ room, states, theme, onClick }: RoomCardProps) {
     : NaN;
   const temp = isNaN(rawTemp) ? null : `${rawTemp.toFixed(0)} °C`;
 
-  const lightOn = lightState?.state === "on";
+  const lightOn    = lightState?.state === "on";
   const lightLabel = lightState ? (lightOn ? "Allumée" : "Éteinte") : null;
 
-  // Climate/heating devices in this room
-  const climateDevices = room.devices.filter((d) => d.type === "climate");
-  const climateActive = climateDevices.some((d) => {
-    const s = states[d.entity]?.state;
-    return s && s !== "off" && s !== "unavailable";
-  });
-  const heatingMode = climateActive
-    ? climateDevices.find((d) => {
-        const s = states[d.entity]?.state;
-        return s && s !== "off" && s !== "unavailable";
-      })?.label ?? null
-    : null;
+  // Build climate tags for each device in the room
+  const climateTags = room.devices
+    .filter((d) => d.type === "climate")
+    .map((d) => {
+      const isAC = d.entity === ENTITIES.climate.entity;
+      return climateTag(d.entity, states, isAC);
+    })
+    .filter(Boolean) as NonNullable<ReturnType<typeof climateTag>>[];
 
-  // Is main climate entity (AC) active in this room?
-  const isClimActive = room.tempEntity === ENTITIES.climate.entity &&
-    states[ENTITIES.climate.entity]?.state !== "off" &&
-    states[ENTITIES.climate.entity]?.state !== undefined;
+  const anyClimActive = climateTags.some((t) => t.isAC && !t.off);
 
   return (
     <button
@@ -49,7 +71,9 @@ function RoomCard({ room, states, theme, onClick }: RoomCardProps) {
       <div className="room-card__header">
         <span className="room-card__name">{room.label}</span>
         <div className="room-card__badges">
-          {isClimActive && <span className="room-card__badge room-card__badge--fan" title="Climatisation active">❄️</span>}
+          {anyClimActive && (
+            <span className="room-card__badge room-card__badge--fan" title="Climatisation active">❄️</span>
+          )}
         </div>
       </div>
 
@@ -67,11 +91,15 @@ function RoomCard({ room, states, theme, onClick }: RoomCardProps) {
             {lightLabel}
           </span>
         )}
-        {heatingMode && (
-          <span className="room-card__meta room-card__meta--heat">
-            <span className="room-card__meta-icon">🔥</span> {heatingMode}
+        {climateTags.map((tag, i) => (
+          <span
+            key={i}
+            className={`room-card__meta ${!tag.off && tag.isAC ? "room-card__meta--clim" : ""} ${!tag.off && !tag.isAC ? "room-card__meta--heat" : ""}`}
+          >
+            <span className="room-card__meta-icon">{tag.icon}</span>
+            {tag.label}
           </span>
-        )}
+        ))}
       </div>
     </button>
   );

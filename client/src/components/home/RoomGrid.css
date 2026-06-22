@@ -109,6 +109,10 @@
   color: #f97316;
 }
 
+.room-card__meta--clim {
+  color: #3b82f6;
+}
+
 .room-card__meta-icon {
   font-size: 0.8rem;
 }
