@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import { config } from "./config";
 import { haRouter } from "./routes/ha";
 import { authRouter } from "./routes/auth";
+import { photosRouter } from "./routes/photos";
 import { requireAuth } from "./middleware/requireAuth";
 import { createWsProxy } from "./ws/proxy";
 
@@ -20,6 +21,7 @@ app.get("/health", (_req, res) => res.json({ ok: true }));
 
 // Protected routes
 app.use("/api/ha", requireAuth, haRouter);
+app.use("/api/photos", requireAuth, photosRouter);
 
 const server = http.createServer(app);
 createWsProxy(server);

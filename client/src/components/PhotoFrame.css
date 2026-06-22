@@ -1,0 +1,79 @@
+.photo-frame {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pf-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.pf-img--loaded {
+  opacity: 1;
+}
+
+.pf-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.pf-no-photos {
+  color: rgba(255,255,255,0.5);
+  font-size: 1rem;
+}
+
+.pf-info {
+  position: absolute;
+  bottom: 2rem;
+  left: 2.5rem;
+  right: 2.5rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.pf-clock__time {
+  font-size: 5rem;
+  font-weight: 200;
+  color: #fff;
+  line-height: 1;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+
+.pf-clock__date {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.85);
+  margin-top: 0.25rem;
+  text-transform: capitalize;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+}
+
+.pf-sensors {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+
+.pf-sensor {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.85);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.25);
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+}

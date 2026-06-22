@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useHaStates } from "./hooks/useHaStates";
 import { useTheme } from "./hooks/useTheme";
 import { useAuth } from "./hooks/useAuth";
+import { useIdle } from "./hooks/useIdle";
 import { Sidebar, type Section } from "./components/Sidebar";
 import { RightPanel } from "./components/RightPanel";
 import { LoginPage } from "./components/LoginPage";
 import { RoomDetail } from "./components/RoomDetail";
+import { PhotoFrame } from "./components/PhotoFrame";
 import { HomePage } from "./components/home/HomePage";
 import { AmbientSection } from "./components/sections/AmbientSection";
 import { ClimateSection } from "./components/sections/ClimateSection";
@@ -20,9 +22,12 @@ export default function App() {
   const { theme, toggle } = useTheme();
   const [section, setSection] = useState<Section>("home");
   const [activeRoom, setActiveRoom] = useState<string | null>(null);
+  const idle = useIdle(30_000);
 
   if (authState === "loading") return null;
   if (authState === "unauthenticated") return <LoginPage onLogin={login} />;
+
+  if (idle) return <PhotoFrame states={states} onDismiss={() => {}} />;
 
   return (
     <div className="app">
