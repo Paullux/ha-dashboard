@@ -1,6 +1,7 @@
 import type { HaState } from "../../types/ha";
 import type { Theme } from "../../hooks/useTheme";
 import { SummaryCards } from "./SummaryCards";
+import { SmartSummary } from "./SmartSummary";
 import { RoomGrid } from "./RoomGrid";
 import { SceneButtons } from "./SceneButtons";
 import { AutomationList } from "./AutomationList";
@@ -32,6 +33,7 @@ export function HomePage({ states, theme, userName = "Paul", onRoomClick }: Prop
 
       <div className="home__content">
         <SummaryCards states={states} />
+        <SmartSummary states={states} />
         <RoomGrid states={states} theme={theme} onRoomClick={onRoomClick} />
         <SceneButtons />
         <AutomationList states={states} />

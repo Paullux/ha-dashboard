@@ -1,0 +1,27 @@
+.smart-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.smart-summary__item {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.smart-summary__item::after {
+  content: "·";
+  margin-left: 0.75rem;
+  color: var(--border);
+}
+
+.smart-summary__item:last-child::after {
+  content: "";
+  margin-left: 0;
+}
