@@ -1,0 +1,81 @@
+.room-detail {
+  padding: 1.5rem;
+  max-width: 600px;
+}
+
+.rd-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.rd-back {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+}
+
+.rd-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.rd-devices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.rd-device {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.rd-device__info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rd-device__icon {
+  font-size: 1.3rem;
+}
+
+.rd-device__label {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.rd-device__sub {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.rd-device__controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rd-device__state {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.rd-device__state--on {
+  color: var(--on);
+}

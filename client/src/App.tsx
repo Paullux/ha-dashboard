@@ -5,11 +5,13 @@ import { useAuth } from "./hooks/useAuth";
 import { Sidebar, type Section } from "./components/Sidebar";
 import { RightPanel } from "./components/RightPanel";
 import { LoginPage } from "./components/LoginPage";
+import { RoomDetail } from "./components/RoomDetail";
 import { HomePage } from "./components/home/HomePage";
 import { AmbientSection } from "./components/sections/AmbientSection";
 import { ClimateSection } from "./components/sections/ClimateSection";
 import { HeatingSection } from "./components/sections/HeatingSection";
 import { LightsSection } from "./components/sections/LightsSection";
+import { ENTITIES } from "./config/dashboard";
 import "./App.css";
 
 export default function App() {
@@ -17,6 +19,7 @@ export default function App() {
   const { states, connected } = useHaStates();
   const { theme, toggle } = useTheme();
   const [section, setSection] = useState<Section>("home");
+  const [activeRoom, setActiveRoom] = useState<string | null>(null);
 
   if (authState === "loading") return null;
   if (authState === "unauthenticated") return <LoginPage onLogin={login} />;
@@ -33,17 +36,25 @@ export default function App() {
       />
 
       <main className="main">
-        {section === "home" && (
+        {section === "home" && !activeRoom && (
           <HomePage
             states={states}
             theme={theme}
-            onRoomClick={(roomId) => {
-              // Pour l'instant, les clics pièce naviguent vers lumières/chauffage
-              // On pourra ajouter une vue par pièce plus tard
-              console.log("room clicked:", roomId);
-            }}
+            onRoomClick={(roomId) => setActiveRoom(roomId)}
           />
         )}
+        {section === "home" && activeRoom && (() => {
+          const room = ENTITIES.rooms.find((r) => r.id === activeRoom);
+          if (!room) return null;
+          return (
+            <RoomDetail
+              roomLabel={room.label}
+              devices={[...room.devices]}
+              states={states}
+              onBack={() => setActiveRoom(null)}
+            />
+          );
+        })()}
         {section === "ambient" && (
           <div className="section-wrap">
             <AmbientSection states={states} />

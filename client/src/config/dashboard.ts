@@ -55,13 +55,60 @@ export const ENTITIES = {
 
   // Le climatiseur couvre le salon + salle à manger (un seul appareil)
   rooms: [
-    { id: "salon",        label: "Salon",         icon: "🛋️", tempEntity: "climate.climatisation",   lightEntity: "light.lumieres_sejour" },
-    { id: "cuisine",      label: "Cuisine",        icon: "🍳", tempEntity: "climate.cuisine",       lightEntity: "light.cuisine" },
-    { id: "chambre",      label: "Chambre",        icon: "🛏️", tempEntity: "climate.chambre",       lightEntity: "light.lampe_chambre" },
-    { id: "sdb",          label: "Salle de bain",  icon: "🛁", tempEntity: "climate.salle_de_bain", lightEntity: null },
-    { id: "bureau",       label: "Bureau",         icon: "🖥️", tempEntity: null,                    lightEntity: "light.bureau" },
-    { id: "couloir",      label: "Couloir",        icon: "🚪", tempEntity: null,                    lightEntity: "light.couloir" },
-    { id: "salle_manger", label: "Salle à manger", icon: "🍽️", tempEntity: "climate.climatisation",   lightEntity: null },
+    {
+      id: "salon", label: "Salon", icon: "🛋️",
+      tempEntity: "climate.climatisation", lightEntity: "light.lumieres_sejour",
+      devices: [
+        { label: "Lumières Séjour",  entity: "light.lumieres_sejour",  type: "light" as const },
+        { label: "Climatiseur",      entity: "climate.climatisation",  type: "climate" as const },
+        { label: "Radiateur",        entity: "climate.salon_tv",       type: "climate" as const },
+      ],
+    },
+    {
+      id: "cuisine", label: "Cuisine", icon: "🍳",
+      tempEntity: "climate.cuisine", lightEntity: "light.cuisine",
+      devices: [
+        { label: "Lumière Cuisine",  entity: "light.cuisine",          type: "light" as const },
+        { label: "Radiateur",        entity: "climate.cuisine",        type: "climate" as const },
+      ],
+    },
+    {
+      id: "chambre", label: "Chambre", icon: "🛏️",
+      tempEntity: "climate.chambre", lightEntity: "light.lampe_chambre",
+      devices: [
+        { label: "Lampe Chambre",    entity: "light.lampe_chambre",   type: "light" as const },
+        { label: "Radiateur",        entity: "climate.chambre",       type: "climate" as const },
+      ],
+    },
+    {
+      id: "sdb", label: "Salle de bain", icon: "🛁",
+      tempEntity: "climate.salle_de_bain", lightEntity: null,
+      devices: [
+        { label: "Radiateur",        entity: "climate.salle_de_bain", type: "climate" as const },
+      ],
+    },
+    {
+      id: "bureau", label: "Bureau", icon: "🖥️",
+      tempEntity: null, lightEntity: "light.bureau",
+      devices: [
+        { label: "Lampe Bureau",     entity: "light.bureau",          type: "light" as const },
+      ],
+    },
+    {
+      id: "couloir", label: "Couloir", icon: "🚪",
+      tempEntity: null, lightEntity: "light.couloir",
+      devices: [
+        { label: "Lampe Couloir",    entity: "light.couloir",         type: "light" as const },
+      ],
+    },
+    {
+      id: "salle_manger", label: "Salle à manger", icon: "🍽️",
+      tempEntity: "climate.climatisation", lightEntity: null,
+      devices: [
+        { label: "Climatiseur",      entity: "climate.climatisation",  type: "climate" as const },
+        { label: "Radiateur",        entity: "climate.salle_a_manger", type: "climate" as const },
+      ],
+    },
   ],
 
   lights: {
