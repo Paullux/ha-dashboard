@@ -1,10 +1,9 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import type { HaState } from "../types/ha";
 import { ENTITIES } from "../config/dashboard";
 import "./PhotoFrame.css";
 
 const BASE = import.meta.env["VITE_API_URL"] ?? "";
-const SLIDE_INTERVAL = 8000;
 const DAY_IMG   = `${BASE}/api/photos/ambiance/sejour-lumieres-eteintes.jpg`;
 const NIGHT_IMG = `${BASE}/api/photos/ambiance/sejour-soir.jpg`;
 
@@ -90,12 +89,8 @@ interface Props {
 }
 
 export function PhotoFrame({ states, onDismiss }: Props) {
-  const [photos, setPhotos] = useState<string[]>([]);
-  const [index, setIndex] = useState(0);
-  const [slideLoaded, setSlideLoaded] = useState(false);
   const [ambiance, setAmbiance] = useState<Ambiance>(() => getAmbiance(states));
   const [showNight, setShowNight] = useState(() => getAmbiance(states).useNight);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Update ambiance every minute + when states change (for lamps)
   useEffect(() => {
@@ -112,24 +107,6 @@ export function PhotoFrame({ states, onDismiss }: Props) {
     }, 60_000);
     return () => clearInterval(t);
   }, [states]);
-
-  // Fetch slideshow photos
-  useEffect(() => {
-    fetch(`${BASE}/api/photos/list`, { credentials: "include" })
-      .then((r) => r.json())
-      .then((list: string[]) => setPhotos([...list].sort(() => Math.random() - 0.5)))
-      .catch(() => setPhotos([]));
-  }, []);
-
-  // Slideshow timer
-  useEffect(() => {
-    if (photos.length <= 1) return;
-    timerRef.current = setInterval(() => {
-      setSlideLoaded(false);
-      setIndex((i) => (i + 1) % photos.length);
-    }, SLIDE_INTERVAL);
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [photos]);
 
   // Build lamp halo gradient
   const lampGradients: string[] = [];
@@ -150,10 +127,6 @@ export function PhotoFrame({ states, onDismiss }: Props) {
     windy: "Venteux", fog: "Brouillard", clear_night: "Nuit claire",
   };
 
-  const slideUrl = photos.length > 0
-    ? `${BASE}/api/photos/${encodeURIComponent(photos[index] ?? "")}`
-    : null;
-
   return (
     <div className="photo-frame" onClick={onDismiss}>
 
@@ -170,16 +143,6 @@ export function PhotoFrame({ states, onDismiss }: Props) {
       {/* Rain effect */}
       {ambiance.rain && <div className="pf-rain"><div className="pf-rain__drops" /></div>}
 
-      {/* Slideshow on top */}
-      {slideUrl && (
-        <img
-          key={slideUrl}
-          src={slideUrl}
-          alt=""
-          className={`pf-slide ${slideLoaded ? "pf-slide--loaded" : ""}`}
-          onLoad={() => setSlideLoaded(true)}
-        />
-      )}
 
       <div className="pf-overlay" />
 
