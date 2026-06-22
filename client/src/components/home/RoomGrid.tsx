@@ -19,14 +19,38 @@ function RoomCard({ room, states, theme, onClick }: RoomCardProps) {
     ? parseFloat((tempState.attributes as Record<string, unknown>)["current_temperature"] as string ?? tempState.state)
     : NaN;
   const temp = isNaN(rawTemp) ? null : `${rawTemp.toFixed(0)} °C`;
-  const lightOn    = lightState?.state === "on";
+
+  const lightOn = lightState?.state === "on";
   const lightLabel = lightState ? (lightOn ? "Allumée" : "Éteinte") : null;
 
+  // Climate/heating devices in this room
+  const climateDevices = room.devices.filter((d) => d.type === "climate");
+  const climateActive = climateDevices.some((d) => {
+    const s = states[d.entity]?.state;
+    return s && s !== "off" && s !== "unavailable";
+  });
+  const heatingMode = climateActive
+    ? climateDevices.find((d) => {
+        const s = states[d.entity]?.state;
+        return s && s !== "off" && s !== "unavailable";
+      })?.label ?? null
+    : null;
+
+  // Is main climate entity (AC) active in this room?
+  const isClimActive = room.tempEntity === ENTITIES.climate.entity &&
+    states[ENTITIES.climate.entity]?.state !== "off" &&
+    states[ENTITIES.climate.entity]?.state !== undefined;
+
   return (
-    <button className="room-card" onClick={onClick}>
+    <button
+      className={`room-card ${lightOn ? "room-card--light-on" : ""}`}
+      onClick={onClick}
+    >
       <div className="room-card__header">
         <span className="room-card__name">{room.label}</span>
-        <span className="room-card__arrow">›</span>
+        <div className="room-card__badges">
+          {isClimActive && <span className="room-card__badge room-card__badge--fan" title="Climatisation active">❄️</span>}
+        </div>
       </div>
 
       <RoomIllustration roomId={room.id} theme={theme} />
@@ -39,7 +63,13 @@ function RoomCard({ room, states, theme, onClick }: RoomCardProps) {
         )}
         {lightLabel && (
           <span className={`room-card__meta ${lightOn ? "room-card__meta--on" : ""}`}>
-            <span className="room-card__meta-icon">💡</span> {lightLabel}
+            <span className={`room-card__meta-icon ${lightOn ? "room-card__meta-icon--glow" : ""}`}>💡</span>
+            {lightLabel}
+          </span>
+        )}
+        {heatingMode && (
+          <span className="room-card__meta room-card__meta--heat">
+            <span className="room-card__meta-icon">🔥</span> {heatingMode}
           </span>
         )}
       </div>

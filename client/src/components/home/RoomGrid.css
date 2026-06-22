@@ -34,6 +34,12 @@
   box-shadow: 0 0 0 1px var(--accent);
 }
 
+/* Halo discret quand lumière allumée */
+.room-card--light-on {
+  border-color: rgba(255, 200, 80, 0.45);
+  box-shadow: 0 0 10px rgba(255, 200, 80, 0.15);
+}
+
 .room-card__header {
   display: flex;
   justify-content: space-between;
@@ -47,9 +53,23 @@
   color: var(--text);
 }
 
-.room-card__arrow {
-  font-size: 1rem;
-  color: var(--text-muted);
+.room-card__badges {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+/* Ventilateur animé si clim active */
+.room-card__badge--fan {
+  display: inline-block;
+  font-size: 0.85rem;
+  animation: spin 2s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
 .room-card__illustration {
@@ -85,6 +105,20 @@
   color: var(--on);
 }
 
+.room-card__meta--heat {
+  color: #f97316;
+}
+
 .room-card__meta-icon {
   font-size: 0.8rem;
+}
+
+/* Halo pulsé sur l'icône lumière quand allumée */
+.room-card__meta-icon--glow {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { filter: drop-shadow(0 0 2px rgba(255,200,80,0.4)); }
+  50%       { filter: drop-shadow(0 0 6px rgba(255,200,80,0.9)); }
 }
