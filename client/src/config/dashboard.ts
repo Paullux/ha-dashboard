@@ -180,7 +180,7 @@ export const ENTITIES = {
     { label: "Lecture",       entity: "scene.lecture",       icon: "📖" },
     { label: "Réveil",        entity: "scene.reveil",        icon: "🌅" },
     { label: "Nuit",          entity: "scene.nuit",          icon: "🌙" },
-    { label: "Départ",        entity: "scene.depart",        icon: "🚗" },
+    { label: "Départ",        entity: "script.depart",       icon: "🚗" },
   ],
 
   quickActions: [
