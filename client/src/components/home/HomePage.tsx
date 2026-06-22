@@ -32,8 +32,8 @@ export function HomePage({ states, theme, userName = "Paul", onRoomClick }: Prop
       </header>
 
       <div className="home__content">
-        <SummaryCards states={states} />
         <SmartSummary states={states} />
+        <SummaryCards states={states} />
         <RoomGrid states={states} theme={theme} onRoomClick={onRoomClick} />
         <SceneButtons />
         <AutomationList states={states} />

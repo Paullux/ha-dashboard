@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { HaState } from "../../types/ha";
 import { ENTITIES } from "../../config/dashboard";
 import "./SmartSummary.css";
@@ -6,69 +7,87 @@ interface Props {
   states: Record<string, HaState>;
 }
 
-function buildSentences(states: Record<string, HaState>): string[] {
-  const sentences: string[] = [];
+interface Item {
+  icon: ReactNode;
+  text: string;
+}
 
-  // Température intérieure
-  const tempIn = states[ENTITIES.ambient.tempIndoor];
+function buildItems(states: Record<string, HaState>): Item[] {
+  const items: Item[] = [];
+
+  // Température intérieure / extérieure
+  const tempIn  = states[ENTITIES.ambient.tempIndoor];
   const tempOut = states[ENTITIES.ambient.tempOutdoor];
   if (tempIn) {
     const t = parseFloat(tempIn.state);
     if (!isNaN(t)) {
-      let s = `${t.toFixed(1)} °C à l'intérieur`;
+      let text = `${t.toFixed(1)} °C intérieur`;
       if (tempOut) {
         const o = parseFloat(tempOut.state);
-        if (!isNaN(o)) s += `, ${o.toFixed(1)} °C dehors`;
+        if (!isNaN(o)) text += `, ${o.toFixed(1)} °C dehors`;
       }
-      sentences.push(s + ".");
+      items.push({ icon: "🌡️", text });
     }
   }
 
   // Météo
   const weather = states[ENTITIES.weather.entity];
   const weatherLabel: Record<string, string> = {
-    sunny: "Temps ensoleillé", partlycloudy: "Ciel partiellement nuageux",
-    cloudy: "Ciel couvert", rainy: "Pluie prévue", pouring: "Fortes pluies",
+    sunny: "Ensoleillé", partlycloudy: "Partiellement nuageux",
+    cloudy: "Couvert", rainy: "Pluie", pouring: "Fortes pluies",
     snowy: "Neige", windy: "Vent fort", fog: "Brouillard", clear_night: "Nuit claire",
   };
   if (weather && weatherLabel[weather.state]) {
-    sentences.push(`${weatherLabel[weather.state]}.`);
+    items.push({ icon: "🌤️", text: weatherLabel[weather.state]! });
   }
 
-  // Lumières allumées
+  // Lumières
   const allLights = ENTITIES.lights.favorites;
   const lightsOn = allLights.filter((l) => states[l.entity]?.state === "on");
-  if (lightsOn.length === 0) {
-    sentences.push("Toutes les lumières sont éteintes.");
-  } else if (lightsOn.length === 1) {
-    sentences.push(`${lightsOn[0]!.label} allumée.`);
-  } else {
-    sentences.push(`${lightsOn.length} lumières allumées : ${lightsOn.map((l) => l.label).join(", ")}.`);
-  }
+  const lightIcon = lightsOn.length > 0
+    ? <span className="ss-icon ss-icon--glow">💡</span>
+    : <span className="ss-icon ss-icon--dim">💡</span>;
+  const lightText = lightsOn.length === 0
+    ? "Lumières éteintes"
+    : lightsOn.length === 1
+      ? `${lightsOn[0]!.label} allumée`
+      : `${lightsOn.length} lumières allumées`;
+  items.push({ icon: lightIcon, text: lightText });
 
   // Climatisation
   const clim = states[ENTITIES.climate.entity];
   if (clim) {
-    const mode = clim.state;
+    const mode  = clim.state;
     const attrs = clim.attributes as Record<string, unknown>;
     const setpoint = attrs["temperature"] as number | undefined;
     const modeLabel: Record<string, string> = {
-      cool: "en mode froid", heat: "en mode chaud", dry: "en mode sec", auto: "en mode auto",
+      off: "Éteinte", cool: "Froid", heat: "Chaud", dry: "Sec", auto: "Auto",
     };
-    if (mode === "off") {
-      sentences.push("Climatisation éteinte.");
-    } else if (modeLabel[mode]) {
-      sentences.push(`Climatisation ${modeLabel[mode]}${setpoint !== undefined ? ` · consigne ${setpoint} °C` : ""}.`);
-    }
+    const isOn = mode !== "off";
+    const climIcon = isOn
+      ? <span className="ss-icon ss-icon--spin">❄️</span>
+      : <span className="ss-icon ss-icon--dim">❄️</span>;
+    const climText = isOn
+      ? `Climatisation ${modeLabel[mode] ?? mode}${setpoint !== undefined ? ` · ${setpoint} °C` : ""}`
+      : "Climatisation éteinte";
+    items.push({ icon: climIcon, text: climText });
   }
 
-  // Radiateurs actifs
+  // Radiateurs
+  const tempOutVal = tempOut ? parseFloat(tempOut.state) : NaN;
+  const coldOutside = !isNaN(tempOutVal) && tempOutVal < 10;
   const radiateurActifs = ENTITIES.heating.rooms.filter((r) => {
     const s = states[r.entity]?.state;
     return s && s !== "off" && s !== "unavailable";
   });
   if (radiateurActifs.length > 0) {
-    sentences.push(`${radiateurActifs.length} radiateur${radiateurActifs.length > 1 ? "s" : ""} actif${radiateurActifs.length > 1 ? "s" : ""}.`);
+    const heatIcon = coldOutside
+      ? <span className="ss-icon ss-icon--flicker">🔥</span>
+      : <span className="ss-icon">🔥</span>;
+    items.push({
+      icon: heatIcon,
+      text: `${radiateurActifs.length} radiateur${radiateurActifs.length > 1 ? "s" : ""} actif${radiateurActifs.length > 1 ? "s" : ""}`,
+    });
   }
 
   // Consommation hier
@@ -76,21 +95,24 @@ function buildSentences(states: Record<string, HaState>): string[] {
   if (energy) {
     const kwh = parseFloat(energy.state);
     if (!isNaN(kwh)) {
-      sentences.push(`Consommation hier : ${kwh.toFixed(1)} kWh.`);
+      items.push({ icon: "⚡", text: `Hier : ${kwh.toFixed(1)} kWh` });
     }
   }
 
-  return sentences;
+  return items;
 }
 
 export function SmartSummary({ states }: Props) {
-  const sentences = buildSentences(states);
-  if (sentences.length === 0) return null;
+  const items = buildItems(states);
+  if (items.length === 0) return null;
 
   return (
     <div className="smart-summary">
-      {sentences.map((s, i) => (
-        <span key={i} className="smart-summary__item">{s}</span>
+      {items.map((item, i) => (
+        <span key={i} className="smart-summary__item">
+          <span className="smart-summary__icon">{item.icon}</span>
+          <span className="smart-summary__text">{item.text}</span>
+        </span>
       ))}
     </div>
   );
