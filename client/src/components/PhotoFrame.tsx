@@ -13,6 +13,8 @@ interface Ambiance {
   filter: string;
   overlay: string;
   rain: boolean;
+  lampSejour: boolean;
+  lampBureau: boolean;
 }
 
 function getAmbiance(states: Record<string, HaState>): Ambiance {
@@ -20,24 +22,25 @@ function getAmbiance(states: Record<string, HaState>): Ambiance {
   const weatherState = states[ENTITIES.weather.entity]?.state ?? "";
   const isEvening = hour >= 19 || hour < 7;
   const rain = ["rainy", "pouring", "lightning", "lightning-rainy"].includes(weatherState);
+  const lampSejour = states["light.lumieres_sejour"]?.state === "on";
+  const lampBureau = states["light.bureau"]?.state === "on";
 
   if (isEvening) {
     const nightFilter = hour >= 23 || hour < 5
       ? "brightness(0.45) saturate(0.7)"
       : "brightness(0.85) saturate(1.0)";
-    return { useNight: true, filter: nightFilter, overlay: "rgba(10,15,40,0.25)", rain };
+    return { useNight: true, filter: nightFilter, overlay: "rgba(10,15,40,0.25)", rain, lampSejour, lampBureau };
   }
 
-  // Daytime
   const filterMap: Record<string, string> = {
-    sunny:          "brightness(1.25) contrast(1.05) saturate(1.2)",
-    partlycloudy:   "brightness(1.05) saturate(1.0)",
-    cloudy:         "brightness(0.88) saturate(0.75) contrast(0.95)",
-    rainy:          "brightness(0.72) saturate(0.55) contrast(0.9)",
-    pouring:        "brightness(0.65) saturate(0.45) contrast(0.88)",
-    fog:            "brightness(0.82) saturate(0.5) contrast(0.85)",
-    snowy:          "brightness(1.1) saturate(0.5) contrast(0.9)",
-    windy:          "brightness(1.0) saturate(0.9)",
+    sunny:        "brightness(1.25) contrast(1.05) saturate(1.2)",
+    partlycloudy: "brightness(1.05) saturate(1.0)",
+    cloudy:       "brightness(0.88) saturate(0.75) contrast(0.95)",
+    rainy:        "brightness(0.72) saturate(0.55) contrast(0.9)",
+    pouring:      "brightness(0.65) saturate(0.45) contrast(0.88)",
+    fog:          "brightness(0.82) saturate(0.5) contrast(0.85)",
+    snowy:        "brightness(1.1) saturate(0.5) contrast(0.9)",
+    windy:        "brightness(1.0) saturate(0.9)",
   };
   const overlayMap: Record<string, string> = {
     sunny:        "rgba(255,200,80,0.08)",
@@ -48,13 +51,12 @@ function getAmbiance(states: Record<string, HaState>): Ambiance {
     fog:          "rgba(200,210,220,0.2)",
   };
 
-  // Morning warm tint
   if (hour >= 6 && hour < 10) {
     return {
       useNight: false,
       filter: "brightness(1.05) saturate(1.1) sepia(0.08)",
       overlay: "rgba(255,160,60,0.1)",
-      rain,
+      rain, lampSejour, lampBureau,
     };
   }
 
@@ -62,7 +64,7 @@ function getAmbiance(states: Record<string, HaState>): Ambiance {
     useNight: false,
     filter: filterMap[weatherState] ?? "brightness(1.0)",
     overlay: overlayMap[weatherState] ?? "transparent",
-    rain,
+    rain, lampSejour, lampBureau,
   };
 }
 
@@ -95,7 +97,13 @@ export function PhotoFrame({ states, onDismiss }: Props) {
   const [showNight, setShowNight] = useState(() => getAmbiance(states).useNight);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Update ambiance every minute
+  // Update ambiance every minute + when states change (for lamps)
+  useEffect(() => {
+    const a = getAmbiance(states);
+    setAmbiance(a);
+    setShowNight(a.useNight);
+  }, [states]);
+
   useEffect(() => {
     const t = setInterval(() => {
       const a = getAmbiance(states);
@@ -123,6 +131,16 @@ export function PhotoFrame({ states, onDismiss }: Props) {
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [photos]);
 
+  // Build lamp halo gradient
+  const lampGradients: string[] = [];
+  if (ambiance.lampSejour) {
+    lampGradients.push("radial-gradient(ellipse 28% 38% at 78% 18%, rgba(255,200,100,0.45) 0%, transparent 70%)");
+  }
+  if (ambiance.lampBureau) {
+    lampGradients.push("radial-gradient(ellipse 22% 32% at 14% 22%, rgba(255,210,130,0.38) 0%, transparent 70%)");
+  }
+  const lampOverlay = lampGradients.length > 0 ? lampGradients.join(", ") : "none";
+
   const tempIn  = states[ENTITIES.ambient.tempIndoor];
   const tempOut = states[ENTITIES.ambient.tempOutdoor];
   const weather = states[ENTITIES.weather.entity];
@@ -140,16 +158,19 @@ export function PhotoFrame({ states, onDismiss }: Props) {
     <div className="photo-frame" onClick={onDismiss}>
 
       {/* Ambiance background — day/night crossfade */}
-      <img src={DAY_IMG}   className={`pf-bg pf-bg--day   ${!showNight ? "pf-bg--active" : ""}`} alt="" style={{ filter: ambiance.filter }} />
-      <img src={NIGHT_IMG} className={`pf-bg pf-bg--night ${showNight  ? "pf-bg--active" : ""}`} alt="" style={{ filter: ambiance.filter }} />
+      <img src={DAY_IMG}   className={`pf-bg ${!showNight ? "pf-bg--active" : ""}`} alt="" style={{ filter: ambiance.filter }} />
+      <img src={NIGHT_IMG} className={`pf-bg ${showNight  ? "pf-bg--active" : ""}`} alt="" style={{ filter: ambiance.filter }} />
 
-      {/* Color overlay (weather tint) */}
+      {/* Weather color tint */}
       <div className="pf-tint" style={{ background: ambiance.overlay }} />
+
+      {/* Lamp halos — independent per lamp */}
+      <div className="pf-lamps" style={{ background: lampOverlay }} />
 
       {/* Rain effect */}
       {ambiance.rain && <div className="pf-rain"><div className="pf-rain__drops" /></div>}
 
-      {/* Slideshow on top — shown at 30% opacity */}
+      {/* Slideshow on top */}
       {slideUrl && (
         <img
           key={slideUrl}
