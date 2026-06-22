@@ -1,7 +1,7 @@
 {
-  "name": "HA Dashboard",
-  "short_name": "HA Dashboard",
-  "description": "Home Assistant Dashboard",
+  "name": "Naive Home Dashboard",
+  "short_name": "NHD",
+  "description": "A clean real-time dashboard for Home Assistant",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1a1a2e",

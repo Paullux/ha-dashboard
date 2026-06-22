@@ -1,5 +1,5 @@
 {
-  "name": "ha-webui-server",
+  "name": "naive-home-dashboard-server",
   "version": "1.0.0",
   "private": true,
   "scripts": {
