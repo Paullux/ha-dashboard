@@ -11,6 +11,7 @@ import { createWsProxy } from "./ws/proxy";
 
 const app = express();
 
+app.set("trust proxy", 1); // Cloudflare + NPM
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
