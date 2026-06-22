@@ -5,19 +5,37 @@ import "./RoomIllustration.css";
 interface Props {
   roomId: string;
   theme: Theme;
+  lightOn?: boolean;
+  climActive?: boolean;
+  heatActive?: boolean;
 }
 
-export function RoomIllustration({ roomId, theme }: Props) {
+export function RoomIllustration({ roomId, theme, lightOn, climActive, heatActive }: Props) {
+  const hour = new Date().getHours();
+  const isNight = hour >= 21 || hour < 7;
   const svg = useRoomSvg(`/rooms/${roomId}.svg`, theme);
+
+  const classes = [
+    "room-illustration",
+    isNight    ? "room-illustration--night" : "room-illustration--day",
+    lightOn    ? "room-illustration--light-on" : "",
+    climActive ? "room-illustration--clim" : "",
+    heatActive ? "room-illustration--heat" : "",
+  ].filter(Boolean).join(" ");
 
   if (!svg) {
     return <div className="room-illustration room-illustration--placeholder" />;
   }
 
   return (
-    <div
-      className="room-illustration"
-      dangerouslySetInnerHTML={{ __html: svg }}
-    />
+    <div className={classes}>
+      <div className="room-illustration__svg" dangerouslySetInnerHTML={{ __html: svg }} />
+      {lightOn    && <div className="room-illustration__overlay room-illustration__overlay--light" />}
+      {climActive && <div className="room-illustration__overlay room-illustration__overlay--clim" />}
+      {heatActive && <div className="room-illustration__overlay room-illustration__overlay--heat" />}
+      {isNight    && <div className="room-illustration__overlay room-illustration__overlay--night" />}
+      {climActive && <div className="room-illustration__particles room-illustration__particles--cold" />}
+      {heatActive && <div className="room-illustration__particles room-illustration__particles--warm" />}
+    </div>
   );
 }

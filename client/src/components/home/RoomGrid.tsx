@@ -62,6 +62,7 @@ function RoomCard({ room, states, theme, onClick }: RoomCardProps) {
     .filter(Boolean) as NonNullable<ReturnType<typeof climateTag>>[];
 
   const anyClimActive = climateTags.some((t) => t.isAC && !t.off);
+  const anyHeatActive = climateTags.some((t) => !t.isAC && !t.off);
 
   return (
     <button
@@ -74,10 +75,19 @@ function RoomCard({ room, states, theme, onClick }: RoomCardProps) {
           {anyClimActive && (
             <span className="room-card__badge room-card__badge--fan" title="Climatisation active">❄️</span>
           )}
+          {anyHeatActive && (
+            <span className="room-card__badge room-card__badge--flicker" title="Radiateur actif">🔥</span>
+          )}
         </div>
       </div>
 
-      <RoomIllustration roomId={room.id} theme={theme} />
+      <RoomIllustration
+        roomId={room.id}
+        theme={theme}
+        lightOn={lightOn}
+        climActive={anyClimActive}
+        heatActive={anyHeatActive}
+      />
 
       <div className="room-card__footer">
         {temp && (

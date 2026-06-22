@@ -67,6 +67,20 @@
   transform-origin: center;
 }
 
+/* Flamme vacillante si radiateur actif */
+.room-card__badge--flicker {
+  display: inline-block;
+  font-size: 0.85rem;
+  animation: flicker 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes flicker {
+  0%   { transform: scaleY(1)    rotate(-3deg); opacity: 0.85; }
+  30%  { transform: scaleY(1.08) rotate(2deg);  opacity: 1;    }
+  60%  { transform: scaleY(0.95) rotate(-2deg); opacity: 0.9;  }
+  100% { transform: scaleY(1.05) rotate(3deg);  opacity: 1;    }
+}
+
 @keyframes spin {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
