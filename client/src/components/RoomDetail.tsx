@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import type { HaState } from "../types/ha";
 import { useServiceCall } from "../hooks/useServiceCall";
 import "./RoomDetail.css";
@@ -87,6 +88,12 @@ function ClimateRow({ device, states }: { device: Device; states: Record<string,
 }
 
 export function RoomDetail({ roomLabel, devices, states, onBack }: Props) {
+  useEffect(() => {
+    const handler = (e: MouseEvent) => { if (e.button === 3) { e.preventDefault(); onBack(); } };
+    window.addEventListener("mouseup", handler);
+    return () => window.removeEventListener("mouseup", handler);
+  }, [onBack]);
+
   return (
     <div className="room-detail">
       <div className="rd-header">
