@@ -18,7 +18,7 @@ export const ENTITIES = {
   },
 
   climate: {
-    entity: "climate.climatiseur",
+    entity: "climate.climatisation",
     modes: [
       { label: "Froid",  value: "cool", color: "#3b82f6" },
       { label: "Chaud",  value: "heat", color: "#f97316" },
@@ -55,13 +55,13 @@ export const ENTITIES = {
 
   // Le climatiseur couvre le salon + salle à manger (un seul appareil)
   rooms: [
-    { id: "salon",        label: "Salon",         icon: "🛋️", tempEntity: "climate.climatiseur",   lightEntity: "light.lumieres_sejour" },
+    { id: "salon",        label: "Salon",         icon: "🛋️", tempEntity: "climate.climatisation",   lightEntity: "light.lumieres_sejour" },
     { id: "cuisine",      label: "Cuisine",        icon: "🍳", tempEntity: "climate.cuisine",       lightEntity: "light.cuisine" },
     { id: "chambre",      label: "Chambre",        icon: "🛏️", tempEntity: "climate.chambre",       lightEntity: "light.lampe_chambre" },
     { id: "sdb",          label: "Salle de bain",  icon: "🛁", tempEntity: "climate.salle_de_bain", lightEntity: null },
     { id: "bureau",       label: "Bureau",         icon: "🖥️", tempEntity: null,                    lightEntity: "light.bureau" },
     { id: "couloir",      label: "Couloir",        icon: "🚪", tempEntity: null,                    lightEntity: "light.couloir" },
-    { id: "salle_manger", label: "Salle à manger", icon: "🍽️", tempEntity: "climate.climatiseur",   lightEntity: null },
+    { id: "salle_manger", label: "Salle à manger", icon: "🍽️", tempEntity: "climate.climatisation",   lightEntity: null },
   ],
 
   lights: {
