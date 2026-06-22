@@ -13,7 +13,7 @@ export const ENTITIES = {
 
   energy: {
     currentPower: "sensor.elec_reference_6_kva_peak_offpeak_consommation_actuelle",
-    todayKwh:     "sensor.salon_tv_consommation_journaliere",
+    yesterdayKwh: "sensor.linky_09756439941653_consumption",
     unit:         "kW",
   },
 

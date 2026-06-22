@@ -47,12 +47,12 @@ export function SummaryCards({ states }: Props) {
 
   const tempState  = states[e.ambient.tempIndoor];
   const humState   = states[e.ambient.humidity];
-  const powerState = states[e.energy.currentPower];
+  const yesterdayState = states[e.energy.yesterdayKwh];
   const wxState    = states[e.weather.entity];
 
   const temp    = tempState  ? parseFloat(tempState.state).toFixed(1)  : "—";
   const hum     = humState   ? Math.round(parseFloat(humState.state))   : "—";
-  const power   = powerState ? parseFloat(powerState.state).toFixed(2)  : "—";
+  const yesterday = yesterdayState ? parseFloat(yesterdayState.state).toFixed(1) : "—";
   const wxTemp  = wxState    ? (wxState.attributes as Record<string,unknown>)["temperature"] as number : null;
 
   const humNum = typeof hum === "number" ? hum : null;
@@ -67,7 +67,7 @@ export function SummaryCards({ states }: Props) {
     <div className="sum-cards">
       <Card icon="🌡️" label="Température" value={temp} unit=" °C" sub="Intérieur" />
       <Card icon="💧" label="Humidité" value={String(hum)} unit=" %" sub={humSub} subColor={humColor} />
-      <Card icon="⚡" label="Énergie" value={power} unit={` ${e.energy.unit}`} sub="En cours" />
+      <Card icon="⚡" label="Énergie" value={yesterday} unit=" kWh" sub="Hier (Linky)" />
       <Card
         icon="🌤️"
         label="Météo"
