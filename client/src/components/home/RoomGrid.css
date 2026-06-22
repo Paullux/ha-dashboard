@@ -12,7 +12,7 @@
 
 .room-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 0.75rem;
 }
 
@@ -56,7 +56,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 90px;
+  aspect-ratio: 4 / 3;
   background: var(--sf2);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
