@@ -16,6 +16,22 @@ interface Props {
   states: Record<string, HaState>;
 }
 
+function getRoomDisplay(entity: HaState | undefined, modes: typeof ENTITIES.heating.modes) {
+  if (!entity) return { label: "—", color: undefined, preset: "off", isOff: true };
+  const attrs = entity.attributes as Record<string, unknown>;
+  const hvac = entity.state;
+  const preset = (attrs["preset_mode"] as string | undefined) ?? "none";
+  const isOff = hvac === "off";
+  if (isOff) return { label: "Éteint", color: "#475569", preset: "off", isOff: true };
+  const mode = modes.find((m) => m.value === preset);
+  return { label: mode?.label ?? preset, color: mode?.color, preset, isOff: false };
+}
+
+function turnOff(call: ReturnType<typeof useServiceCall>, entityId: string) {
+  call("climate", "turn_off", { entity_id: entityId });
+  call("climate", "set_temperature", { entity_id: entityId, temperature: 7 });
+}
+
 export function HeatingSection({ states }: Props) {
   const [view, setView] = useState<View>({ type: "list" });
   const call = useServiceCall();
@@ -28,23 +44,20 @@ export function HeatingSection({ states }: Props) {
         {cfg.rooms.map((room, i) => {
           const entity = states[room.entity];
           const temp = (entity?.attributes as Record<string, unknown> | undefined)?.["temperature"] as number | undefined;
-          const mode = entity?.state ?? "—";
-          const modeLabel = cfg.modes.find((m) => m.value === mode)?.label ?? mode;
-          const modeColor = cfg.modes.find((m) => m.value === mode)?.color;
-          const isOff = mode === "off";
+          const { label, color, isOff } = getRoomDisplay(entity, cfg.modes);
           return (
             <div key={room.entity} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <div style={{ flex: 1 }}>
                 <DrillItem
                   label={room.label}
-                  sub={`${modeLabel}${temp !== undefined ? ` · ${temp} °C` : ""}`}
-                  accent={modeColor}
+                  sub={`${label}${!isOff && temp !== undefined ? ` · ${temp} °C` : ""}`}
+                  accent={color}
                   onClick={() => setView({ type: "room", index: i })}
                 />
               </div>
               {!isOff && (
                 <button
-                  onClick={() => call("script", "turn_on", { entity_id: room.offScript })}
+                  onClick={() => turnOff(call, room.entity)}
                   title="Éteindre"
                   style={{
                     flexShrink: 0, background: "none", border: "1px solid var(--border)",
@@ -59,7 +72,7 @@ export function HeatingSection({ states }: Props) {
         })}
         {!allOff && (
           <button
-            onClick={() => call("script", "turn_on", { entity_id: cfg.globalOffScript })}
+            onClick={() => cfg.rooms.forEach((r) => turnOff(call, r.entity))}
             style={{
               marginTop: "0.5rem", width: "100%", padding: "0.6rem",
               background: "#ef444420", border: "1px solid #ef4444",
@@ -75,11 +88,9 @@ export function HeatingSection({ states }: Props) {
   const room = cfg.rooms[view.index]!;
   const entity = states[room.entity];
   const attrs = entity?.attributes as Record<string, unknown> ?? {};
-  const currentMode = entity?.state ?? "off";
-  const currentTemp = (attrs["temperature"] as number | undefined) ?? 16;
+  const currentTemp = (attrs["temperature"] as number | undefined) ?? 7;
   const currentIndoor = (attrs["current_temperature"] as number | undefined);
-  const modeLabel = cfg.modes.find((m) => m.value === currentMode)?.label ?? currentMode;
-  const modeColor = cfg.modes.find((m) => m.value === currentMode)?.color;
+  const { label: modeLabel, color: modeColor, preset: currentPreset, isOff } = getRoomDisplay(entity, cfg.modes);
 
   if (view.type === "consigne") {
     return (
@@ -94,10 +105,7 @@ export function HeatingSection({ states }: Props) {
           min={cfg.minTemp}
           max={cfg.maxTemp}
           onChange={(t) =>
-            call("climate", "set_temperature", {
-              entity_id: room.entity,
-              temperature: t,
-            })
+            call("climate", "set_temperature", { entity_id: room.entity, temperature: t })
           }
         />
       </DrillDown>
@@ -109,16 +117,17 @@ export function HeatingSection({ states }: Props) {
       <DrillDown title={`Mode — ${room.label}`} back={() => setView({ type: "room", index: view.index })}>
         <ModeButtons
           modes={cfg.modes}
-          current={currentMode}
+          current={currentPreset}
           onSelect={(v) => {
             if (v === "off") {
-              call("script", "turn_on", { entity_id: room.offScript });
+              turnOff(call, room.entity);
               setView({ type: "list" });
             } else {
-              call("climate", "set_hvac_mode", {
+              call("climate", "set_preset_mode", {
                 entity_id: room.entity,
-                hvac_mode: v,
+                preset_mode: v,
               });
+              setView({ type: "room", index: view.index });
             }
           }}
         />
@@ -126,7 +135,6 @@ export function HeatingSection({ states }: Props) {
     );
   }
 
-  // Room detail
   return (
     <DrillDown title={room.label} back={() => setView({ type: "list" })}>
       <div style={{
@@ -152,10 +160,10 @@ export function HeatingSection({ states }: Props) {
         accent={modeColor}
         onClick={() => setView({ type: "mode", index: view.index })}
       />
-      {currentMode !== "off" && (
+      {!isOff && (
         <button
           onClick={() => {
-            call("script", "turn_on", { entity_id: room.offScript });
+            turnOff(call, room.entity);
             setView({ type: "list" });
           }}
           style={{

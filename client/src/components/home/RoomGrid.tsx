@@ -5,12 +5,11 @@ import { RoomIllustration } from "../RoomIllustration";
 import { useSunTimes } from "../../hooks/useSunTimes";
 import "./RoomGrid.css";
 
-const RADIATOR_MODE: Record<string, string> = {
-  off:       "Éteint",
-  heat_cool: "Hors-Gel",
-  cool:      "Éco",
-  heat:      "Confort",
-  auto:      "Boost",
+const RADIATOR_PRESET: Record<string, string> = {
+  away:    "Hors-Gel",
+  eco:     "Éco",
+  comfort: "Confort",
+  none:    "Éteint",
 };
 
 const CLIM_MODE: Record<string, string> = {
@@ -27,8 +26,11 @@ function climateTag(entity: string, states: Record<string, HaState>, isAC: boole
   const mode = s.state;
   const attrs = s.attributes as Record<string, unknown>;
   const setpoint = attrs["temperature"] as number | undefined;
-  const label = isAC ? (CLIM_MODE[mode] ?? mode) : (RADIATOR_MODE[mode] ?? mode);
+  const preset = attrs["preset_mode"] as string | undefined;
   const off = mode === "off";
+  const label = isAC
+    ? (CLIM_MODE[mode] ?? mode)
+    : off ? "Éteint" : (RADIATOR_PRESET[preset ?? ""] ?? preset ?? mode);
   const icon = isAC ? "❄️" : "🔥";
   const setpointStr = !off && setpoint !== undefined ? ` · ${setpoint} °C` : "";
   return { icon, label: `${label}${setpointStr}`, off, isAC };
