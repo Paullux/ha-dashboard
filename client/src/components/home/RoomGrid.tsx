@@ -27,7 +27,7 @@ function climateTag(entity: string, states: Record<string, HaState>, isAC: boole
   const attrs = s.attributes as Record<string, unknown>;
   const setpoint = attrs["temperature"] as number | undefined;
   const preset = attrs["preset_mode"] as string | undefined;
-  const off = mode === "off";
+  const off = mode === "off" || (!isAC && preset === "none");
   const label = isAC
     ? (CLIM_MODE[mode] ?? mode)
     : off ? "Éteint" : (RADIATOR_PRESET[preset ?? ""] ?? preset ?? mode);

@@ -77,8 +77,10 @@ function buildItems(states: Record<string, HaState>): Item[] {
   const tempOutVal = tempOut ? parseFloat(tempOut.state) : NaN;
   const coldOutside = !isNaN(tempOutVal) && tempOutVal < 10;
   const radiateurActifs = ENTITIES.heating.rooms.filter((r) => {
-    const s = states[r.entity]?.state;
-    return s && s !== "off" && s !== "unavailable";
+    const entity = states[r.entity];
+    const s = entity?.state;
+    const preset = (entity?.attributes as Record<string, unknown> | undefined)?.["preset_mode"] as string | undefined;
+    return s && s !== "off" && s !== "unavailable" && preset !== "none";
   });
   if (radiateurActifs.length > 0) {
     const heatIcon = coldOutside
