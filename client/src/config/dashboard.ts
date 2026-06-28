@@ -49,6 +49,7 @@ export const ENTITIES = {
       { label: "Éco",      value: "cool",      color: "#22c55e" },
       { label: "Confort",  value: "heat",      color: "#f97316" },
       { label: "Boost",    value: "auto",      color: "#ef4444" },
+      { label: "Éteint",   value: "off",       color: "#475569" },
     ],
     minTemp: 10,
     maxTemp: 30,

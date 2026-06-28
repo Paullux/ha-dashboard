@@ -110,12 +110,17 @@ export function HeatingSection({ states }: Props) {
         <ModeButtons
           modes={cfg.modes}
           current={currentMode}
-          onSelect={(v) =>
-            call("climate", v === "off" ? "turn_off" : "set_hvac_mode", {
-              entity_id: room.entity,
-              ...(v !== "off" ? { hvac_mode: v } : {}),
-            })
-          }
+          onSelect={(v) => {
+            if (v === "off") {
+              call("script", "turn_on", { entity_id: room.offScript });
+              setView({ type: "list" });
+            } else {
+              call("climate", "set_hvac_mode", {
+                entity_id: room.entity,
+                hvac_mode: v,
+              });
+            }
+          }}
         />
       </DrillDown>
     );
