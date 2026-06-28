@@ -28,8 +28,9 @@ function getRoomDisplay(entity: HaState | undefined, modes: typeof ENTITIES.heat
 }
 
 function turnOff(call: ReturnType<typeof useServiceCall>, entityId: string) {
-  call("climate", "turn_off", { entity_id: entityId });
+  call("climate", "set_preset_mode", { entity_id: entityId, preset_mode: "none" });
   call("climate", "set_temperature", { entity_id: entityId, temperature: 7 });
+  call("climate", "turn_off", { entity_id: entityId });
 }
 
 export function HeatingSection({ states }: Props) {
