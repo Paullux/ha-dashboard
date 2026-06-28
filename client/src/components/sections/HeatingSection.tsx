@@ -23,6 +23,7 @@ function getRoomDisplay(entity: HaState | undefined, modes: typeof ENTITIES.heat
   const preset = (attrs["preset_mode"] as string | undefined) ?? "none";
   const isOff = hvac === "off";
   if (isOff) return { label: "Éteint", color: "#475569", preset: "off", isOff: true };
+  if (preset === "none") return { label: "—", color: "#475569", preset: "none", isOff: false };
   const mode = modes.find((m) => m.value === preset);
   return { label: mode?.label ?? preset, color: mode?.color, preset, isOff: false };
 }

@@ -79,8 +79,7 @@ function buildItems(states: Record<string, HaState>): Item[] {
   const radiateurActifs = ENTITIES.heating.rooms.filter((r) => {
     const entity = states[r.entity];
     const s = entity?.state;
-    const preset = (entity?.attributes as Record<string, unknown> | undefined)?.["preset_mode"] as string | undefined;
-    return s && s !== "off" && s !== "unavailable" && preset !== "none";
+    return s && s !== "off" && s !== "unavailable";
   });
   if (radiateurActifs.length > 0) {
     const heatIcon = coldOutside
