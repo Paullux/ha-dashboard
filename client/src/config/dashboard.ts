@@ -37,12 +37,13 @@ export const ENTITIES = {
 
   heating: {
     rooms: [
-      { label: "Salon TV",       entity: "climate.salon_tv" },
-      { label: "Chambre",        entity: "climate.chambre" },
-      { label: "Cuisine",        entity: "climate.cuisine" },
-      { label: "Salle de bain",  entity: "climate.salle_de_bain" },
-      { label: "Salle à manger", entity: "climate.salle_a_manger" },
+      { label: "Salon TV",       entity: "climate.salon_tv",        offScript: "script.salon_tv_off" },
+      { label: "Chambre",        entity: "climate.chambre",         offScript: "script.chambre_off" },
+      { label: "Cuisine",        entity: "climate.cuisine",         offScript: "script.cuisine_off" },
+      { label: "Salle de bain",  entity: "climate.salle_de_bain",  offScript: "script.salle_de_bain_off" },
+      { label: "Salle à manger", entity: "climate.salle_a_manger", offScript: "script.salle_a_manger_off" },
     ],
+    globalOffScript: "script.voltalis_global_off",
     modes: [
       { label: "Hors-gel", value: "heat_cool", color: "#3b82f6" },
       { label: "Éco",      value: "cool",      color: "#22c55e" },

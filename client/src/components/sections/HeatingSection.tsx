@@ -22,6 +22,7 @@ export function HeatingSection({ states }: Props) {
   const cfg = ENTITIES.heating;
 
   if (view.type === "list") {
+    const allOff = cfg.rooms.every((r) => states[r.entity]?.state === "off");
     return (
       <DrillDown title="Chauffage">
         {cfg.rooms.map((room, i) => {
@@ -30,16 +31,43 @@ export function HeatingSection({ states }: Props) {
           const mode = entity?.state ?? "—";
           const modeLabel = cfg.modes.find((m) => m.value === mode)?.label ?? mode;
           const modeColor = cfg.modes.find((m) => m.value === mode)?.color;
+          const isOff = mode === "off";
           return (
-            <DrillItem
-              key={room.entity}
-              label={room.label}
-              sub={`${modeLabel}${temp !== undefined ? ` · ${temp} °C` : ""}`}
-              accent={modeColor}
-              onClick={() => setView({ type: "room", index: i })}
-            />
+            <div key={room.entity} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <div style={{ flex: 1 }}>
+                <DrillItem
+                  label={room.label}
+                  sub={`${modeLabel}${temp !== undefined ? ` · ${temp} °C` : ""}`}
+                  accent={modeColor}
+                  onClick={() => setView({ type: "room", index: i })}
+                />
+              </div>
+              {!isOff && (
+                <button
+                  onClick={() => call("script", "turn_on", { entity_id: room.offScript })}
+                  title="Éteindre"
+                  style={{
+                    flexShrink: 0, background: "none", border: "1px solid var(--border)",
+                    borderRadius: "0.5rem", padding: "0.35rem 0.5rem",
+                    cursor: "pointer", color: "#ef4444", fontSize: "0.85rem",
+                    lineHeight: 1,
+                  }}
+                >⏻</button>
+              )}
+            </div>
           );
         })}
+        {!allOff && (
+          <button
+            onClick={() => call("script", "turn_on", { entity_id: cfg.globalOffScript })}
+            style={{
+              marginTop: "0.5rem", width: "100%", padding: "0.6rem",
+              background: "#ef444420", border: "1px solid #ef4444",
+              borderRadius: "0.625rem", color: "#ef4444", fontWeight: 600,
+              fontSize: "0.85rem", cursor: "pointer",
+            }}
+          >⏻ Tout éteindre</button>
+        )}
       </DrillDown>
     );
   }
@@ -119,6 +147,20 @@ export function HeatingSection({ states }: Props) {
         accent={modeColor}
         onClick={() => setView({ type: "mode", index: view.index })}
       />
+      {currentMode !== "off" && (
+        <button
+          onClick={() => {
+            call("script", "turn_on", { entity_id: room.offScript });
+            setView({ type: "list" });
+          }}
+          style={{
+            marginTop: "0.25rem", width: "100%", padding: "0.6rem",
+            background: "#ef444420", border: "1px solid #ef4444",
+            borderRadius: "0.625rem", color: "#ef4444", fontWeight: 600,
+            fontSize: "0.85rem", cursor: "pointer",
+          }}
+        >⏻ Éteindre {room.label}</button>
+      )}
     </DrillDown>
   );
 }
